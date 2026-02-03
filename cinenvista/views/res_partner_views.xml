@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='phone']" position="after">
-                <field name="fax" placeholder="Ej. +34 912 345 678"/>
+                <field name="fax"/>
             </xpath>
         </field>
     </record>

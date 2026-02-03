@@ -4,7 +4,7 @@
         <field name="name">cinenvista.room.tree</field>
         <field name="model">cinenvista.room</field>
         <field name="arch" type="xml">
-            <tree string="Salas">
+            <tree>
                 <field name="name"/>
                 <field name="capacity"/>
             </tree>
@@ -15,16 +15,12 @@
         <field name="name">cinenvista.room.form</field>
         <field name="model">cinenvista.room</field>
         <field name="arch" type="xml">
-            <form string="Sala de Cine">
+            <form>
                 <sheet>
-                    <div class="oe_title">
-                        <label for="name" string="Nombre de la Sala"/>
-                        <h1><field name="name"/></h1>
-                    </div>
                     <group>
+                        <field name="name"/>
                         <field name="capacity"/>
                     </group>
-
                     <notebook>
                         <page string="Proyecciones" name="proyecciones">
                             <field name="screening_ids">
@@ -38,5 +34,11 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="action_cinenvista_room" model="ir.actions.act_window">
+        <field name="name">Salas</field>
+        <field name="res_model">cinenvista.room</field>
+        <field name="view_mode" >tree,form</field>
     </record>
 </odoo>

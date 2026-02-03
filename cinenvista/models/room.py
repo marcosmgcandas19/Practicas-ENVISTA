@@ -6,6 +6,8 @@ class CinenvistaRoom(models.Model):
 
     name = fields.Char(string='Nombre de la Sala', required=True)
     capacity = fields.Integer(string='Aforo Máximo')
+    
+    # Relación con los horarios
     screening_ids = fields.One2many(
         'cinenvista.screening', 
         'room_id', 

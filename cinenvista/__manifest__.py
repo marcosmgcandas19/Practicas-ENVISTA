@@ -3,7 +3,7 @@
     'version': '1.0',
     'summary': 'Gestión de películas y Fax en contactos',
     'category': 'Services',
-    'author': 'Tu Nombre',
+    'author': 'Marcos',
     'depends': ['base', 'contacts'],
     'data': [
         'security/ir.model.access.csv',
