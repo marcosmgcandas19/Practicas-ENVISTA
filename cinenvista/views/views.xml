@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cinenvista_root" 
+              name="CineVista" 
+              sequence="10"/>
+
+    <menuitem id="menu_cinenvista_movie" 
+              name="Películas" 
+              parent="menu_cinenvista_root" 
+              action="action_cinenvista_movie" 
+              sequence="10"/>
+
+    <menuitem id="menu_cinenvista_room" 
+              name="Salas" 
+              parent="menu_cinenvista_root" 
+              action="action_cinenvista_room" 
+              sequence="20"/>
+
+    <menuitem id="menu_cinenvista_screening" 
+              name="Cartelera" 
+              parent="menu_cinenvista_root" 
+              action="action_cinenvista_screening" 
+              sequence="30"/>
+</odoo>

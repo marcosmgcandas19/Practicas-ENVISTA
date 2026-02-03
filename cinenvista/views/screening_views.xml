@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_screening_tree" model="ir.ui.view">
+        <field name="name">cinenvista.screening.tree</field>
+        <field name="model">cinenvista.screening</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="start_time"/>
+                <field name="movie_id"/>
+                <field name="room_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_cinenvista_screening" model="ir.actions.act_window">
+        <field name="name">Cartelera</field>
+        <field name="res_model">cinenvista.screening</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
