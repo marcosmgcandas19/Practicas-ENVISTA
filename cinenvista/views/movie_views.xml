@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cinenvista_movie_tree" model="ir.ui.view">
+        <field name="name">cinenvista.movie.tree</field>
+        <field name="model">cinenvista.movie</field>
+        <field name="arch" type="xml">
+            <tree string="Películas">
+                <field name="title"/>
+                <field name="rating" widget="priority"/>
+                <field name="image_url" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_cinenvista_movie_form" model="ir.ui.view">
+        <field name="name">cinenvista.movie.form</field>
+        <field name="model">cinenvista.movie</field>
+        <field name="arch" type="xml">
+            <form string="Película">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="title" string="Título de la película"/>
+                        <h1>
+                            <field name="title" placeholder="Ej. El Padrino"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="rating" widget="priority"/>
+                        </group>
+                        <group>
+                            <field name="image_url" widget="url" placeholder="https://..."/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Sinopsis" name="description">
+                            <field name="description" placeholder="Escribe aquí la sinopsis completa..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cinenvista_movie" model="ir.actions.act_window">
+        <field name="name">Películas</field>
+        <field name="res_model">cinenvista.movie</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea la primera película de tu catálogo.
+            </p>
+        </field>
+    </record>
+</odoo>

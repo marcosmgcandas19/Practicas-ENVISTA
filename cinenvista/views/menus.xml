@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_rooms" model="ir.actions.act_window">
+        <field name="name">Salas</field>
+        <field name="res_model">cinenvista.room</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_screenings" model="ir.actions.act_window">
+        <field name="name">Horarios</field>
+        <field name="res_model">cinenvista.screening</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_cinenvista_root" name="CineVista" sequence="10"/>
+    <menuitem id="menu_rooms" name="Salas" parent="menu_cinenvista_root" action="action_rooms" sequence="20"/>
+    <menuitem id="menu_screenings" name="Cartelera" parent="menu_cinenvista_root" action="action_screenings" sequence="30"/>
+</odoo>

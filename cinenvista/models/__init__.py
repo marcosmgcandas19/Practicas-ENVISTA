@@ -1,3 +1,4 @@
-# -*- coding: utf-8 -*-
-
-from . import models
+from . import movie
+from . import room
+from . import screening
+from . import res_partner
