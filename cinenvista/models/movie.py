@@ -2,6 +2,7 @@ from odoo import models, fields
 
 class CinenvistaMovie(models.Model):
     _name = 'cinenvista.movie'
+    _rec_name = 'title'
     _description = 'Modelo para las películas'
 
     title = fields.Char(string='Título', required=True)
