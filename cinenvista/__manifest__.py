@@ -10,6 +10,7 @@
         'views/movie_views.xml',
         'views/room_views.xml',
         'views/screening_views.xml',
+        'views/reservation_views.xml',
         'views/res_partner_views.xml',
         'views/menus.xml',
     ],

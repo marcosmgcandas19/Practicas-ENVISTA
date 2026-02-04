@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_movie_user,cinenvista.movie.user,model_cinenvista_movie,base.group_user,1,1,1,1
 access_room_user,cinenvista.room.user,model_cinenvista_room,base.group_user,1,1,1,1
 access_screening_user,cinenvista.screening.user,model_cinenvista_screening,base.group_user,1,1,1,1
+access_reservation_user,cinenvista.reservation.user,model_cinenvista_reservation,base.group_user,1,1,1,1
