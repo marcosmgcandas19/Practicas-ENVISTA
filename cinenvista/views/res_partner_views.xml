@@ -8,6 +8,18 @@
             <xpath expr="//field[@name='phone']" position="after">
                 <field name="fax"/>
             </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Reservas">
+                    <field name="reservation_count" readonly="1"/>
+                    <field name="reservation_ids" nolabel="1">
+                        <tree>
+                            <field name="screening_id"/>
+                            <field name="seat_qty"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
         </field>
     </record>
 </odoo>
