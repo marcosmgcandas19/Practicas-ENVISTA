@@ -17,6 +17,11 @@ class CinenvistaReservation(models.Model):
     @api.constrains('seat_qty', 'screening_id', 'state')
     def _check_seat_availability(self):
         for rec in self:
+            # Comprobación: El número de asientos no puede ser negativo
+            if rec.seat_qty and rec.seat_qty < 0:
+                raise ValidationError(
+                    'El número de asientos a reservar no puede ser negativo.'
+                )
             # Si no hay sesión o la sala no tiene capacidad definida, no se realiza la validación
             if not rec.screening_id or not rec.screening_id.room_id:
                 continue
