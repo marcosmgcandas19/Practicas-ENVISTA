@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_ticket_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page" style="padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div style="text-align: center; width: 100%;">
+                            <h1 style="font-size: 28px; font-weight: bold; margin: 0 0 25px 0; border-bottom: 2px solid #333; padding-bottom: 20px;">TICKET DE CINE</h1>
+                            
+                            <h2 style="font-size: 36px; font-weight: bold; margin: 35px 0; color: #333;">
+                                <t t-esc="o.screening_id.movie_id.title or ''"/>
+                            </h2>
+                            
+                            <div style="font-size: 18px; margin: 25px 0; line-height: 2.2; color: #333;">
+                                <div>Sala: <t t-esc="o.screening_id.room_id.name or ''"/></div>
+                                <div>Fecha: <t t-esc="o.screening_id.start_time or ''"/></div>
+                                <div>Cliente: <t t-esc="o.partner_id.name or ''"/></div>
+                                <div>Asientos: <t t-esc="o.seat_qty or 0"/></div>
+                            </div>
+                            
+                            <div style="margin-top: 50px; margin-bottom: 30px;">
+                                <img t-att-src="'/report/barcode/QR/%s?width=%s&amp;height=%s' % (o.name, 180, 180)" style="width: 180px; height: 180px;"/>
+                            </div>
+                            
+                            <div style="font-size: 16px; font-weight: bold; color: #333; letter-spacing: 1px;">
+                                <t t-esc="o.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_ticket" model="ir.actions.report">
+        <field name="name">Ticket de Reserva</field>
+        <field name="model">cinenvista.reservation</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cinenvista.report_ticket_template</field>
+        <field name="report_file">cinenvista.report_ticket_template</field>
+        <field name="print_report_name">'Ticket_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_cinenvista_reservation"/>
+    </record>
+</odoo>

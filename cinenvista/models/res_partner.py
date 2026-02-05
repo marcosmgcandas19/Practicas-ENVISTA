@@ -10,4 +10,4 @@ class ResPartner(models.Model):
     @api.depends('reservation_ids')
     def _compute_reservation_count(self):
         for rec in self:
-            rec.reservation_count = len(rec.reservation_ids)
+            rec.reservation_count = len(rec.reservation_ids) 

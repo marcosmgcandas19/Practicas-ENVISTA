@@ -5,6 +5,7 @@ class CinenvistaReservation(models.Model):
     _name = 'cinenvista.reservation'
     _description = 'Reservas'
 
+    name = fields.Char(string='Referencia', required=True, copy=False, readonly=True, default=lambda self: self.env['ir.sequence'].next_by_code('cinenvista.reservation') or '/')
     partner_id = fields.Many2one('res.partner', string='Cliente')
     screening_id = fields.Many2one('cinenvista.screening', string='Sesión', required=True)
     seat_qty = fields.Integer(string='Número de asientos reservados', default=1)
@@ -44,3 +45,9 @@ class CinenvistaReservation(models.Model):
                             capacity, total_confirmed, rec.seat_qty or 0
                         )
                     )
+
+    @api.model
+    def create(self, vals):
+        if not vals.get('name'):
+            vals['name'] = self.env['ir.sequence'].next_by_code('cinenvista.reservation') or '/'
+        return super(CinenvistaReservation, self).create(vals)

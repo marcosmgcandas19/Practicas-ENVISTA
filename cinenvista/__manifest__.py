@@ -6,11 +6,13 @@
     'author': 'Marcos',
     'depends': ['base', 'contacts'],
     'data': [
+        'data/sequence.xml',
         'security/ir.model.access.csv',
         'views/movie_views.xml',
         'views/room_views.xml',
         'views/screening_views.xml',
         'views/reservation_views.xml',
+        'views/report_ticket_template.xml',
         'views/res_partner_views.xml',
         'views/menus.xml',
     ],

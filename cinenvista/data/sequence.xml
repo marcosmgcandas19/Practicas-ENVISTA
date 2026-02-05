@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_cinenvista_reservation" model="ir.sequence">
+        <field name="name">Secuencia Reservas CinenVista</field>
+        <field name="code">cinenvista.reservation</field>
+        <field name="prefix">TKT/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>
