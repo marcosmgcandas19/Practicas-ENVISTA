@@ -10,4 +10,7 @@
               
     <menuitem id="menu_screening" name="Cartelera" parent="menu_cinenvista_root" 
               action="action_cinenvista_screening" sequence="30"/>
+    
+    <menuitem id="menu_reservation" name="Reservas" parent="menu_cinenvista_root" 
+              action="action_cinenvista_reservation" sequence="40"/>
 </odoo>

@@ -41,6 +41,4 @@
         <field name="res_model">cinenvista.reservation</field>
         <field name="view_mode">tree,form</field>
     </record>
-
-    <menuitem id="menu_reservation" name="Reservas" parent="menu_cinenvista_root" action="action_cinenvista_reservation" sequence="40"/>
 </odoo>

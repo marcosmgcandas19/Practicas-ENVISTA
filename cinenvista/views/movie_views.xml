@@ -23,7 +23,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="title"/>
+                            <field name="title" placeholder="Ingresa el título"/>
                             <field name="rating"/>
                             <field name="tmdb_id" readonly="1" invisible="1"/>
                         </group>
