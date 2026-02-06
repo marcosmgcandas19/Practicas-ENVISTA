@@ -7,7 +7,7 @@ class CinenvistaReservation(models.Model):
 
     name = fields.Char(
         string='Código de Ticket', 
-        default=lambda self: self.env['ir.sequence'].next_by_code('cinenvista.reservation') or _('New'),
+        default='New',
         copy=False, 
         readonly=True,
         tracking=True
@@ -23,11 +23,19 @@ class CinenvistaReservation(models.Model):
     
     @api.model_create_multi
     def create(self, vals_list):
-        """Generar código de ticket basado en secuencia"""
-        for vals in vals_list:
-            if vals.get('name', _('New')) == _('New'):
-                vals['name'] = self.env['ir.sequence'].next_by_code('cinenvista.reservation')
+        """Crear reserva sin generar código de ticket (se genera al imprimir)"""
         return super().create(vals_list)
+
+    def action_generate_ticket(self):
+        """Generar código de ticket y hacer download del PDF"""
+        # Generar código de secuencia si no lo tiene
+        for rec in self:
+            if not rec.name or rec.name == 'New':
+                sequence = self.env['ir.sequence'].next_by_code('cinenvista.reservation')
+                rec.name = sequence if sequence else 'TKT/0000'
+        # Generar y descargar el PDF
+        action = self.env.ref('cinenvista.action_report_ticket')
+        return action.report_action(self, config=False)
 
     @api.constrains('seat_qty', 'screening_id', 'state')
     def _check_seat_availability(self):

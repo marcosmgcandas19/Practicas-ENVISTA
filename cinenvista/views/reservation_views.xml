@@ -18,10 +18,14 @@
         <field name="model">cinenvista.reservation</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_generate_ticket" string="Generar Ticket y Descargar PDF" type="object" class="oe_highlight"/>
+                </header>
                 <sheet>
-                    
+                    <div class="alert alert-info">
+                        <span>Código del Ticket: </span><field name="name" nolabel="1" class="oe_inline" readonly="1" style="font-weight: bold; color: #0078d4;"/>
+                    </div>
                     <group>
-                        <field name="name" />
                         <field name="partner_id"/>
                         <field name="screening_id"/>
                         <field name="seat_qty"/>

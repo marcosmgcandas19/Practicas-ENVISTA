@@ -42,4 +42,5 @@
         <field name="print_report_name">'Ticket_%s' % (object.name)</field>
         <field name="binding_model_id" ref="model_cinenvista_reservation"/>
     </record>
+    
 </odoo>
