@@ -1,11 +1,17 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 class CinenvistaReservation(models.Model):
     _name = 'cinenvista.reservation'
     _description = 'Reservas'
 
-    name = fields.Char(string='Referencia', required=True, copy=False, readonly=True, default=lambda self: self.env['ir.sequence'].next_by_code('cinenvista.reservation') or '/')
+    name = fields.Char(
+        string='Código de Ticket', 
+        default=lambda self: self.env['ir.sequence'].next_by_code('cinenvista.reservation') or _('New'),
+        copy=False, 
+        readonly=True,
+        tracking=True
+    )
     partner_id = fields.Many2one('res.partner', string='Cliente')
     screening_id = fields.Many2one('cinenvista.screening', string='Sesión', required=True)
     seat_qty = fields.Integer(string='Número de asientos reservados', default=1)
@@ -14,15 +20,18 @@ class CinenvistaReservation(models.Model):
         ('confirmed', 'Confirmado'),
         ('canceled', 'Cancelado'),
     ], string='Estado', default='draft')
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Generar código de ticket basado en secuencia"""
+        for vals in vals_list:
+            if vals.get('name', _('New')) == _('New'):
+                vals['name'] = self.env['ir.sequence'].next_by_code('cinenvista.reservation')
+        return super().create(vals_list)
 
     @api.constrains('seat_qty', 'screening_id', 'state')
     def _check_seat_availability(self):
         for rec in self:
-            # Comprobación: El número de asientos no puede ser negativo
-            if rec.seat_qty and rec.seat_qty < 0:
-                raise ValidationError(
-                    'El número de asientos a reservar no puede ser negativo.'
-                )
             # Si no hay sesión o la sala no tiene capacidad definida, no se realiza la validación
             if not rec.screening_id or not rec.screening_id.room_id:
                 continue
@@ -46,8 +55,4 @@ class CinenvistaReservation(models.Model):
                         )
                     )
 
-    @api.model
-    def create(self, vals):
-        if not vals.get('name'):
-            vals['name'] = self.env['ir.sequence'].next_by_code('cinenvista.reservation') or '/'
-        return super(CinenvistaReservation, self).create(vals)
+    
