@@ -18,7 +18,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_get_movie" string="Buscar en TMDB" type="object" class="oe_highlight"/>
+                    <button name="action_get_movie" string="Buscar Pelicula" type="object" class="oe_highlight"/>
                 </header>
                 <sheet>
                     <group>
