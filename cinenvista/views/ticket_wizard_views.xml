@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista formulario para el Asistente de Venta de Entradas -->
+    <record id="view_ticket_wizard_form" model="ir.ui.view">
+        <field name="name">cinenvista.ticket.wizard.form</field>
+        <field name="model">cinenvista.ticket.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm_sale" string="Confirmar Venta" type="object" class="oe_highlight"/>
+                    <button name="cancel" string="Cancelar" type="special" class="oe_link"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Venta Rápida de Entradas</h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="screening_id"/>
+                        </group>
+                        <group>
+                            <field name="seats"/>
+                        </group>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para abrir el asistente -->
+    <record id="action_ticket_wizard" model="ir.actions.act_window">
+        <field name="name">Venta Rápida de Entradas</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cinenvista.ticket.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

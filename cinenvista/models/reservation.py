@@ -7,10 +7,10 @@ class CinenvistaReservation(models.Model):
 
     name = fields.Char(
         string='Código de Ticket', 
-        default='New',
         copy=False, 
         readonly=True,
-        tracking=True
+        tracking=True,
+        index=True
     )
     partner_id = fields.Many2one('res.partner', string='Cliente')
     screening_id = fields.Many2one('cinenvista.screening', string='Sesión', required=True)
@@ -23,16 +23,34 @@ class CinenvistaReservation(models.Model):
     
     @api.model_create_multi
     def create(self, vals_list):
-        """Crear reserva sin generar código de ticket (se genera al imprimir)"""
+        """Crear reserva y generar código de ticket si está confirmada"""
+        for vals in vals_list:
+            # Si la reserva se crea en estado 'confirmed', generar el código de ticket automáticamente
+            if vals.get('state') == 'confirmed' and not vals.get('name'):
+                vals['name'] = self.env['ir.sequence'].next_by_code('cinenvista.reservation')
         return super().create(vals_list)
 
+    def write(self, vals):
+        """Generar código de ticket cuando se cambia a estado confirmado"""
+        # Si se está cambiando el estado a 'confirmed', generar secuencia para los que no lo tengan
+        if vals.get('state') == 'confirmed':
+            for rec in self:
+                # Si el registro actual NO tiene nombre y NO estamos poniendo uno en vals
+                if not rec.name and 'name' not in vals:
+                    vals = dict(vals)  # Copiar para no modificar el dict original
+                    vals['name'] = self.env['ir.sequence'].next_by_code('cinenvista.reservation')
+                    break  # Solo hacer esto una vez, el super().write lo hará para todos
+        
+        return super().write(vals)
+
     def action_generate_ticket(self):
-        """Generar código de ticket y hacer download del PDF"""
+        """Generar código de ticket (si no lo tiene) y descargar PDF"""
         # Generar código de secuencia si no lo tiene
         for rec in self:
-            if not rec.name or rec.name == 'New':
-                sequence = self.env['ir.sequence'].next_by_code('cinenvista.reservation')
-                rec.name = sequence if sequence else 'TKT/0000'
+            if not rec.name:
+                rec.write({
+                    'name': self.env['ir.sequence'].next_by_code('cinenvista.reservation')
+                })
         # Generar y descargar el PDF
         action = self.env.ref('cinenvista.action_report_ticket')
         return action.report_action(self, config=False)

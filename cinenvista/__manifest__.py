@@ -12,6 +12,8 @@
         'views/screening_views.xml',
         'views/reservation_views.xml',
         'views/res_partner_views.xml',
+        'views/ticket_wizard_views.xml',
+        'views/report_ticket_template.xml',
         'views/menus.xml',
     ],
     'installable': True,
