@@ -8,6 +8,8 @@
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="screening_id"/>
+                <field name="qty_regular"/>
+                <field name="qty_vip"/>
                 <field name="seat_qty"/>
                 <field name="state"/>
             </tree>
@@ -20,10 +22,17 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="action_confirm_reservation" 
+                            string="Confirmar Pedido" 
+                            type="object" 
+                            class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    
                     <button name="action_generate_ticket" 
                             string="Generar Ticket y Descargar PDF" 
                             type="object" 
-                            class="oe_highlight"/>
+                            class="oe_highlight"
+                            invisible="state != 'confirmed'"/>
                     
                     <button name="action_view_sale_order" 
                             string="Ver Pedido" 
@@ -44,9 +53,18 @@
                             <field name="screening_id"/>
                         </group>
                         <group>
-                            <field name="seat_qty"/>
+                            <field name="qty_regular"/>
+                            <field name="qty_vip"/>
+                            <field name="seat_qty" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
                             <field name="sale_order_id" readonly="1" invisible="not sale_order_id"/>
-                            <field name="state" invisible="1"/> </group>
+                        </group>
+                        <group>
+                            <field name="state" invisible="1"/>
+                        </group>
                     </group>
                 </sheet>
             </form>

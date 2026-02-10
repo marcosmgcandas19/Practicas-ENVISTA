@@ -13,7 +13,13 @@ class CinenvistaReservation(models.Model):
     )
     partner_id = fields.Many2one('res.partner', string='Cliente')
     screening_id = fields.Many2one('cinenvista.screening', string='Sesión', required=True)
-    seat_qty = fields.Integer(string='Número de asientos reservados', default=1)
+    qty_regular = fields.Integer(string='Entradas regulares', default=0)
+    qty_vip = fields.Integer(string='Entradas VIP', default=0)
+    seat_qty = fields.Integer(
+        string='Número de asientos reservados',
+        compute='_compute_seat_qty',
+        store=True
+    )
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('confirmed', 'Confirmado'),
@@ -22,6 +28,12 @@ class CinenvistaReservation(models.Model):
     
     # Campo para vincular con el pedido de venta
     sale_order_id = fields.Many2one('sale.order', string='Pedido de venta', readonly=True)
+
+    @api.depends('qty_regular', 'qty_vip')
+    def _compute_seat_qty(self):
+        """Calcular el total de asientos como suma de regulares + VIP"""
+        for rec in self:
+            rec.seat_qty = rec.qty_regular + rec.qty_vip
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -49,16 +61,78 @@ class CinenvistaReservation(models.Model):
             'target': 'current',
         }
 
-    @api.constrains('seat_qty', 'screening_id', 'state')
+    def action_confirm_reservation(self):
+        """Confirmar reserva: Crear/Confirmar Sale Order y cambiar estado a confirmado"""
+        self.ensure_one()
+        
+        total_seats = self.qty_regular + self.qty_vip
+
+        # Validar disponibilidad de asientos
+        if total_seats <= 0:
+            raise ValidationError(_("Debe seleccionar al menos una entrada."))
+
+        if total_seats > self.screening_id.available_seats:
+            raise ValidationError(
+                _("No hay suficientes asientos disponibles.\n"
+                  "Asientos disponibles: %s\n"
+                  "Asientos solicitados: %s") % (
+                    self.screening_id.available_seats,
+                    total_seats
+                )
+            )
+
+        # Si no existe pedido de venta, crear uno
+        if not self.sale_order_id:
+            sale_order = self.env['sale.order'].create({
+                'partner_id': self.partner_id.id,
+            })
+            
+            # Crear líneas de pedido según las cantidades especificadas
+            order_lines = []
+            
+            if self.qty_regular > 0:
+                product_reg = self.env.ref('cinenvista.product_ticket_regular')
+                order_lines.append((0, 0, {
+                    'product_id': product_reg.id,
+                    'product_uom_qty': self.qty_regular,
+                }))
+            
+            if self.qty_vip > 0:
+                product_vip = self.env.ref('cinenvista.product_ticket_vip')
+                order_lines.append((0, 0, {
+                    'product_id': product_vip.id,
+                    'product_uom_qty': self.qty_vip,
+                }))
+            
+            if order_lines:
+                sale_order.write({'order_line': order_lines})
+            
+            # Confirmar el pedido
+            sale_order.action_confirm()
+            
+            # Vincular al pedido a la reserva
+            self.sale_order_id = sale_order.id
+        else:
+            # Si el pedido ya existe y no está confirmado, confirmarlo
+            if self.sale_order_id.state in ['draft', 'sent']:
+                self.sale_order_id.action_confirm()
+        
+        # Cambiar estado de la reserva a confirmado
+        self.state = 'confirmed'
+        
+        return True
+
+    @api.constrains('qty_regular', 'qty_vip', 'screening_id', 'state')
     def _check_seat_availability(self):
         """Validar disponibilidad de asientos en la sala antes de confirmar"""
         for rec in self:
             if not rec.screening_id or not rec.screening_id.room_id:
                 continue
             capacity = rec.screening_id.room_id.capacity or 0
+            total_seats = rec.qty_regular + rec.qty_vip
             
             # Validación de capacidad individual
-            if rec.seat_qty and rec.seat_qty > capacity:
+            if total_seats and total_seats > capacity:
                 raise ValidationError(
                     _('No se pueden reservar más asientos de los que tiene la sala (capacidad: %s).') % capacity
                 )
@@ -68,10 +142,10 @@ class CinenvistaReservation(models.Model):
                 domain = [('screening_id', '=', rec.screening_id.id), ('state', '=', 'confirmed')]
                 existing = self.search(domain).filtered(lambda r: r.id != rec.id)
                 total_confirmed = sum(existing.mapped('seat_qty')) or 0
-                if (total_confirmed + (rec.seat_qty or 0)) > capacity:
+                if (total_confirmed + total_seats) > capacity:
                     raise ValidationError(
                         _('No hay suficientes asientos disponibles para confirmar la reserva.\n'
                           'Capacidad: %s, ya confirmados: %s, solicitados: %s') % (
-                            capacity, total_confirmed, rec.seat_qty or 0
+                            capacity, total_confirmed, total_seats
                         )
                     )
