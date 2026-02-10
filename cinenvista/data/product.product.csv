@@ -1,0 +1,3 @@
+id,name,type,list_price,default_code
+product_ticket_regular,Entrada regular,service,6.0,TKT-REG
+product_ticket_vip,Entrada VIP,service,12.0,TKT-VIP

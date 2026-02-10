@@ -1,1 +1,1 @@
-from . import ticket_wizard
+from . import cinenvista_ticket_wizard

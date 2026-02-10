@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Vista formulario para el Asistente de Venta de Entradas -->
     <record id="view_ticket_wizard_form" model="ir.ui.view">
         <field name="name">cinenvista.ticket.wizard.form</field>
         <field name="model">cinenvista.ticket.wizard</field>
@@ -8,21 +7,20 @@
             <form>
                 <header>
                     <button name="action_confirm_sale" string="Confirmar Venta" type="object" class="oe_highlight"/>
-                    <button name="cancel" string="Cancelar" type="special" class="oe_link"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>Venta Rápida de Entradas</h1>
                     </div>
                     <group>
-                        <group>
-                            <field name="screening_id"/>
+                        <group string="Información General">
+                            <field name="screening_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="partner_id" options="{'no_create_edit': True}"/>
                         </group>
-                        <group>
-                            <field name="seats"/>
-                        </group>
-                        <group>
-                            <field name="partner_id"/>
+                        <group string="Cantidades">
+                            <field name="qty_regular"/>
+                            <field name="qty_vip"/>
                         </group>
                     </group>
                 </sheet>
@@ -30,7 +28,6 @@
         </field>
     </record>
 
-    <!-- Acción para abrir el asistente -->
     <record id="action_ticket_wizard" model="ir.actions.act_window">
         <field name="name">Venta Rápida de Entradas</field>
         <field name="type">ir.actions.act_window</field>
