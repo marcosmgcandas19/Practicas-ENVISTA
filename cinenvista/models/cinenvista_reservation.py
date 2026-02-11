@@ -15,6 +15,11 @@ class CinenvistaReservation(models.Model):
     screening_id = fields.Many2one('cinenvista.screening', string='Sesión', required=True)
     qty_regular = fields.Integer(string='Entradas regulares', default=0)
     qty_vip = fields.Integer(string='Entradas VIP', default=0)
+    seat_ids = fields.Many2many(
+        'cinenvista.seat',
+        string='Butacas Reservadas',
+        readonly=True
+    )
     seat_qty = fields.Integer(
         string='Número de asientos reservados',
         compute='_compute_seat_qty',

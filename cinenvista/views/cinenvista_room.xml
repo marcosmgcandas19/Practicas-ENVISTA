@@ -7,6 +7,8 @@
             <tree>
                 <field name="name"/>
                 <field name="capacity"/>
+                <field name="rows_qty"/>
+                <field name="cols_qty"/>
             </tree>
         </field>
     </record>
@@ -16,12 +18,38 @@
         <field name="model">cinenvista.room</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_generate_seats" 
+                            string="Generar Butacas" 
+                            type="object" 
+                            class="oe_highlight" 
+                            confirm="¿Estás seguro? Esta acción eliminará las butacas actuales y generará unas nuevas basadas en la configuración de filas y columnas."/>
+                </header>
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Ej. Sala 1 - IMAX"/>
+                        </h1>
+                    </div>
                     <group>
-                        <field name="name"/>
-                        <field name="capacity"/>
+                        <group string="Capacidad General">
+                            <field name="capacity"/>
+                        </group>
+                        <group string="Configuración de Butacas">
+                            <field name="rows_qty"/>
+                            <field name="cols_qty"/>
+                        </group>
                     </group>
                     <notebook>
+                        <page string="Butacas" name="butacas">
+                            <field name="seat_ids" readonly="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="row"/>
+                                    <field name="number"/>
+                                </tree>
+                            </field>
+                        </page>
                         <page string="Proyecciones" name="proyecciones">
                             <field name="screening_ids">
                                 <tree editable="bottom">
@@ -40,6 +68,6 @@
     <record id="action_cinenvista_room" model="ir.actions.act_window">
         <field name="name">Salas</field>
         <field name="res_model">cinenvista.room</field>
-        <field name="view_mode" >tree,form</field>
+        <field name="view_mode">tree,form</field>
     </record>
 </odoo>

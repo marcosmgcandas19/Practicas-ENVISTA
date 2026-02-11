@@ -7,6 +7,9 @@
               
     <menuitem id="menu_room" name="Salas" parent="menu_cinenvista_root" 
               action="action_cinenvista_room" sequence="20"/>
+    
+    <menuitem id="menu_seat" name="Butacas" parent="menu_cinenvista_root" 
+              action="action_cinenvista_seat" sequence="25"/>
               
     <menuitem id="menu_screening" name="Cartelera" parent="menu_cinenvista_root" 
               action="action_cinenvista_screening" sequence="30"/>
