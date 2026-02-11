@@ -61,7 +61,8 @@ class CinenvistaTicketWizard(models.TransientModel):
         self.env['cinenvista.reservation'].create({
             'screening_id': self.screening_id.id,
             'partner_id': self.partner_id.id,
-            'seat_qty': total_seats,
+            'qty_regular': self.qty_regular,
+            'qty_vip': self.qty_vip,
             'state': 'confirmed',
             'sale_order_id': sale_order.id,
         })
