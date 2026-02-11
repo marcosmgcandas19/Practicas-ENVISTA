@@ -8,7 +8,7 @@ class CinenvistaTicketWizard(models.TransientModel):
     screening_id = fields.Many2one('cinenvista.screening', string='Sesión', required=True)
     partner_id = fields.Many2one('res.partner', string='Cliente', required=True)
     
-    # Campos de cantidad (puedes computarlos ahora según la selección si lo prefieres)
+    # Campos de cantidad 
     qty_regular = fields.Integer(string='Entradas regulares', default=0)
     qty_vip = fields.Integer(string='Entradas VIP', default=0)
 
@@ -39,7 +39,7 @@ class CinenvistaTicketWizard(models.TransientModel):
                     ('screening_id', '=', wizard.screening_id.id),
                     ('state', '=', 'confirmed')
                 ])
-                # Extraemos los IDs de las butacas (asumiendo que añadiste seat_ids a reservation)
+                # Extraemos los IDs de las butacas 
                 wizard.occupied_seat_ids = reservations.mapped('seat_ids')
             else:
                 wizard.occupied_seat_ids = self.env['cinenvista.seat']
@@ -58,7 +58,7 @@ class CinenvistaTicketWizard(models.TransientModel):
         if total_input_qty != total_requested:
              raise ValidationError(_("La suma de entradas (%s) no coincide con las butacas seleccionadas (%s).") % (total_input_qty, total_requested))
 
-        # 2. Crear pedido de venta (sale.order)
+        # 2. Crear pedido de venta 
         sale_order = self.env['sale.order'].create({
             'partner_id': self.partner_id.id,
             'order_line': [],
@@ -89,7 +89,7 @@ class CinenvistaTicketWizard(models.TransientModel):
             'partner_id': self.partner_id.id,
             'qty_regular': self.qty_regular,
             'qty_vip': self.qty_vip,
-            'seat_ids': [(6, 0, self.selected_seat_ids.ids)], # Vinculación M2M
+            'seat_ids': [(6, 0, self.selected_seat_ids.ids)], 
             'state': 'confirmed',
             'sale_order_id': sale_order.id,
         })

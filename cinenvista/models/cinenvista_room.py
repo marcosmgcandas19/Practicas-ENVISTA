@@ -24,13 +24,13 @@ class CinenvistaRoom(models.Model):
 
     def action_generate_seats(self):
         for room in self:
-            # 1. Borrar (unlink) las butacas existentes
+            # 1. Borrar  las butacas existentes
             room.seat_ids.unlink()
 
-            # 2. Generar datos mediante bucles
+            # 2. Generar butacas
             seats_to_create = []
             for i in range(room.rows_qty):
-                # chr(65) es 'A', chr(66) es 'B', etc.
+                
                 row_letter = chr(65 + i)
                 
                 for j in range(1, room.cols_qty + 1):
