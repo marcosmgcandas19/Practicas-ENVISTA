@@ -15,7 +15,6 @@
         'views/cinenvista_reservation.xml',
         'views/res_partner.xml',
         'views/cinenvista_seat.xml',
-        'views/cinenvista_views.xml',
         'reports/report_ticket_template.xml',
         'wizards/cinenvista_ticket_wizard.xml',
         'views/cinenvista_menus.xml',

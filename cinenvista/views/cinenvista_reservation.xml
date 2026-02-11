@@ -50,12 +50,36 @@
                     <group>
                         <group>
                             <field name="partner_id"/>
-                            <field name="screening_id"/>
+                            <field name="screening_id" options="{'no_create': True}"/>
                         </group>
                         <group>
                             <field name="qty_regular"/>
                             <field name="qty_vip"/>
                             <field name="seat_qty" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Selección de Asientos" invisible="not screening_id">
+                        <group>
+                            <label for="available_seat_ids" string="Butacas Disponibles" />
+                            <field name="available_seat_ids" readonly="1" nolabel="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="row"/>
+                                    <field name="number"/>
+                                    <field name="room_id"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <label for="seat_ids" string="Selecciona tus Butacas" />
+                            <field name="seat_ids" nolabel="1" widget="many2many_tags" options="{'no_create': True}">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="row"/>
+                                    <field name="number"/>
+                                </tree>
+                            </field>
                         </group>
                     </group>
                     <group>
