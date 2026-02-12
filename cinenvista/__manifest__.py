@@ -5,6 +5,7 @@
     'category': 'Services',
     'author': 'Marcos',
     'depends': ['base', 'contacts', 'product', 'sale'],
+    
     'data': [
         'data/product.product.csv',
         'data/cinenvista_sequence_tickets.xml',
@@ -19,6 +20,7 @@
         'wizards/cinenvista_ticket_wizard.xml',
         'views/cinenvista_menus.xml',
     ],
+    
     'installable': True,
     'application': True,
     'external_dependencies': {

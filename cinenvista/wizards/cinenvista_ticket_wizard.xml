@@ -26,6 +26,19 @@
                             <field name="qty_vip"/>
                         </group>
                     </group>
+
+                    <group string="Programa de Fidelización" name="loyalty_section">
+                        <group>
+                            <field name="redeem_points" widget="boolean_toggle"/>
+                        </group>
+                        <group>
+                            <label for="partner_id" string="Puntos Disponibles"/>
+                            <div class="o_row">
+                                <field name="partner_id" readonly="1" options="{'no_open': True}"/> 
+                                <span>: </span>
+                                <field name="partner_id" readonly="1" force_save="1"/> </div>
+                        </group>
+                    </group>
                     
                     <group string="Selección de Asientos">
                         <field name="selected_seat_ids" 

@@ -101,7 +101,7 @@ class CinenvistaReservation(models.Model):
 
     def action_view_sale_order(self):
         """Método para abrir la vista formulario del pedido de venta vinculado"""
-        self.ensure_one()
+        self.ensure_one() # Asegurarse de que solo se procese una reserva a la vez
         return {
             'type': 'ir.actions.act_window',
             'name': _('Pedido de Venta'),
@@ -113,7 +113,7 @@ class CinenvistaReservation(models.Model):
 
     def action_confirm_reservation(self):
         """Confirmar reserva: Crear/Confirmar Sale Order y cambiar estado a confirmado"""
-        self.ensure_one()
+        self.ensure_one() # Asegurarse de que solo se procese una reserva a la vez
         
         total_seats = len(self.seat_ids)
 

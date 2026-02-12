@@ -7,17 +7,28 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='phone']" position="after">
                 <field name="fax"/>
+                <field name="member_level" widget="selection"/>
+                <field name="loyalty_points"/>
             </xpath>
+
+
             <xpath expr="//notebook" position="inside">
-                <page string="Reservas">
-                    <field name="reservation_count" readonly="1"/>
-                    <field name="reservation_ids" nolabel="1">
-                        <tree>
-                            <field name="screening_id"/>
-                            <field name="seat_qty"/>
-                            <field name="state"/>
-                        </tree>
-                    </field>
+                <page string="CineVista" name="cinenvista_info">
+                    <group string="Estadísticas de Cliente">
+                        <field name="reservation_count"/>
+                    </group>
+                    <group string="Historial de Reservas">
+                        <field name="reservation_ids" nolabel="1">
+                            <tree create="false" edit="false">
+                                <field name="name" string="Ticket"/>
+                                <field name="screening_id"/>
+                                <field name="seat_qty" sum="Total Asientos"/>
+                                <field name="state" widget="badge"
+                                       decoration-info="state == 'draft'"
+                                       decoration-success="state == 'confirmed'"/>
+                            </tree>
+                        </field>
+                    </group>
                 </page>
             </xpath>
         </field>
