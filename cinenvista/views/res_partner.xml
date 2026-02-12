@@ -5,21 +5,27 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
+            
             <xpath expr="//field[@name='phone']" position="after">
                 <field name="fax"/>
-                <field name="member_level" widget="selection"/>
-                <field name="loyalty_points"/>
             </xpath>
 
+            <xpath expr="//field[@name='category_id']" position="before">
+                <field name="member_level" string="Nivel de Miembro"/>
+                <field name="loyalty_points" string="Puntos de Lealtad"/>
+            </xpath>
 
             <xpath expr="//notebook" position="inside">
-                <page string="CineVista" name="cinenvista_info">
-                    <group string="Estadísticas de Cliente">
-                        <field name="reservation_count"/>
+                <page string="CinenVista" name="cinenvista_info">
+                    <group>
+                        <group string="Estadísticas de Cliente">
+                            <field name="reservation_count" string="Reservas Totales"/>
+                        </group>
                     </group>
+                    
                     <group string="Historial de Reservas">
                         <field name="reservation_ids" nolabel="1">
-                            <tree create="false" edit="false">
+                            <tree create="false" edit="false" delete="false">
                                 <field name="name" string="Ticket"/>
                                 <field name="screening_id"/>
                                 <field name="seat_qty" sum="Total Asientos"/>
@@ -31,6 +37,7 @@
                     </group>
                 </page>
             </xpath>
+            
         </field>
     </record>
 </odoo>

@@ -12,6 +12,13 @@ class CinenvistaTicketWizard(models.TransientModel):
     qty_regular = fields.Integer(string='Entradas regulares', default=0)
     qty_vip = fields.Integer(string='Entradas VIP', default=0)
     redeem_points = fields.Boolean(string='¿Canjear puntos por entrada gratis?')
+    
+    # Campo computado para mostrar puntos disponibles
+    available_points = fields.Integer(
+        string='Puntos Disponibles',
+        related='partner_id.loyalty_points',
+        readonly=True
+    )
 
 
     room_id = fields.Many2one(
@@ -95,11 +102,11 @@ class CinenvistaTicketWizard(models.TransientModel):
         })
 
 
-        # 4. CÁLCULO DE DESCUENTO POR NIVEL
+        # 4. CÁLCULO DE DESCUENTO POR NIVEL (basado en el nuevo nivel)
         discount = 0.0
-        if self.partner_id.member_level == 'silver':
+        if new_level == 'silver':
             discount = 10.0
-        elif self.partner_id.member_level == 'premium':
+        elif new_level == 'premium':
             discount = 20.0
 
 

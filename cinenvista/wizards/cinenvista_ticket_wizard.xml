@@ -28,15 +28,10 @@
                     </group>
 
                     <group string="Programa de Fidelización" name="loyalty_section">
+                        <field name="partner_id" invisible="1"/>
                         <group>
                             <field name="redeem_points" widget="boolean_toggle"/>
-                        </group>
-                        <group>
-                            <label for="partner_id" string="Puntos Disponibles"/>
-                            <div class="o_row">
-                                <field name="partner_id" readonly="1" options="{'no_open': True}"/> 
-                                <span>: </span>
-                                <field name="partner_id" readonly="1" force_save="1"/> </div>
+                            <field name="available_points" readonly="1"/>
                         </group>
                     </group>
                     
