@@ -1,56 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- 
+        VISTA DE FORMULARIO DEL ASISTENTE DE VENTA RÁPIDA DE ENTRADAS
+        Permite vender entradas de forma rápida, seleccionar butacas,
+        aplicar fidelización y canjear puntos.
+    -->
     <record id="view_ticket_wizard_form" model="ir.ui.view">
         <field name="name">cinenvista.ticket.wizard.form</field>
         <field name="model">cinenvista.ticket.wizard</field>
         <field name="arch" type="xml">
             <form>
+                <!-- BOTONES DE ACCIÓN -->
                 <header>
-                    <button name="action_confirm_sale" string="Confirmar Venta" type="object" class="oe_highlight"/>
-                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    <button 
+                        name="action_confirm_sale"
+                        string="Confirmar Venta"
+                        type="object"
+                        class="oe_highlight"
+                        help="Procesa la venta: crear orden, reserva y actualizar puntos"/>
+                    <button
+                        string="Cancelar"
+                        class="btn-secondary"
+                        special="cancel"
+                        help="Cierra el asistente sin guardar cambios"/>
                 </header>
+
                 <sheet>
+                    <!-- TÍTULO DEL ASISTENTE -->
                     <div class="oe_title">
                         <h1>Venta Rápida de Entradas</h1>
                     </div>
-                    <field name="room_id" invisible="1"/>
-                    <field name="occupied_seat_ids" invisible="1"/>
 
+                    <!-- CAMPOS OCULTOS (necesarios para cálculos pero no visibles) -->
+                    <field name="room_id" invisible="1" help="ID de sala (para filtro de butacas)"/>
+                    <field name="occupied_seat_ids" invisible="1" help="Butacas ocupadas (para validación)"/>
+
+                    <!-- SECCIÓN 1: INFORMACIÓN GENERAL -->
                     <group>
                         <group string="Información General">
-                            <field name="screening_id" options="{'no_create': True, 'no_open': True}"/>
-                            <field name="partner_id" options="{'no_create_edit': True}"/>
+                            <field
+                                name="screening_id"
+                                options="{'no_create': True, 'no_open': True}"
+                                help="Selecciona la sesión de cine"/>
+                            <field
+                                name="partner_id"
+                                options="{'no_create_edit': True}"
+                                help="Cliente comprador (búsqueda)"
+                            />
                         </group>
+
+                        <!-- SECCIÓN 2: CANTIDADES DE ENTRADAS -->
                         <group string="Cantidades">
-                            <field name="qty_regular"/>
-                            <field name="qty_vip"/>
+                            <field name="qty_regular" help="Cantidad de entradas regulares"/>
+                            <field name="qty_vip" help="Cantidad de entradas VIP"/>
                         </group>
                     </group>
 
+                    <!-- SECCIÓN 3: PROGRAMA DE FIDELIZACIÓN -->
                     <group string="Programa de Fidelización" name="loyalty_section">
                         <field name="partner_id" invisible="1"/>
                         <group>
-                            <field name="redeem_points" widget="boolean_toggle"/>
-                            <field name="available_points" readonly="1"/>
+                            <field
+                                name="redeem_points"
+                                widget="boolean_toggle"
+                                help="Marca para canjear puntos por entradas gratis"/>
+                            <field
+                                name="available_points"
+                                readonly="1"
+                                help="Puntos disponibles del cliente (100=1 entrada regular, 200=1 VIP)"/>
                         </group>
                     </group>
                     
+                    <!-- SECCIÓN 4: SELECCIÓN DE BUTACAS -->
                     <group string="Selección de Asientos">
-                        <field name="selected_seat_ids" 
-                               widget="many2many_tags" 
-                               options="{'no_create': True}"
-                               placeholder="Haz clic para seleccionar las butacas..."/>
+                        <field
+                            name="selected_seat_ids"
+                            widget="many2many_tags"
+                            options="{'no_create': True}"
+                            placeholder="Haz clic para seleccionar las butacas...
+                            Ejemplo: A5, B2, B3, C1 (debe coincidir con total de entradas)"
+                            help="Selecciona el mismo número de butacas que la cantidad total de entradas"/>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
 
+    <!-- 
+        ACCIÓN: Abre el asistente de venta rápida
+        Tipo: ventana emergente (tipo modal)
+    -->
     <record id="action_ticket_wizard" model="ir.actions.act_window">
         <field name="name">Venta Rápida de Entradas</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">cinenvista.ticket.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
+        <field name="help">Asistente para realizar ventas rápidas de entradas, seleccionar butacas específicas y aplicar programas de fidelización</field>
     </record>
 </odoo>
