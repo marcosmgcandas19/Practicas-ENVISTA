@@ -6,10 +6,6 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             
-            <xpath expr="//field[@name='phone']" position="after">
-                <field name="fax"/>
-            </xpath>
-
             <xpath expr="//field[@name='category_id']" position="before">
                 <field name="member_level" string="Nivel de Miembro"/>
                 <field name="loyalty_points" string="Puntos de Lealtad"/>
