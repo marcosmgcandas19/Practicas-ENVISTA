@@ -87,8 +87,72 @@ class CinenvistaReservation(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        """Crear reserva sin generar código de ticket (se genera al imprimir)"""
-        return super().create(vals_list)
+        """Crear reserva y actualizar puntos de lealtad si se crea sin sale_order"""
+        records = super().create(vals_list)
+        
+        # REGLA SIMPLE Y CLARA:
+        # SI TIENE sale_order_id → Vino del wizard, NO procesar puntos
+        # SI NO TIENE sale_order_id → Creada manualmente, PROCESAR puntos
+        
+        for record in records:
+            # Saltar si tiene sale_order_id (vino del wizard que ya procesó puntos)
+            if record.sale_order_id:
+                continue
+            
+            # Procesar puntos SOLO si:
+            # - Estado es confirmado
+            # - Tiene partner
+            # - Tiene asientos
+            if record.state == 'confirmed' and record.partner_id and record.seat_ids:
+                points_earned = len(record.seat_ids) * 10
+                new_total_points = record.partner_id.loyalty_points + points_earned
+                
+                # Actualizar nivel según puntos totales
+                new_level = 'standard'
+                if new_total_points > 1000:
+                    new_level = 'premium'
+                elif new_total_points > 500:
+                    new_level = 'silver'
+                
+                record.partner_id.write({
+                    'loyalty_points': new_total_points,
+                    'member_level': new_level
+                })
+        
+        return records
+
+    def write(self, vals):
+        """Al escribir, detectar cambios de estado a confirmado y sumar puntos"""
+        result = super().write(vals)
+        
+        # REGLA SIMPLE Y CLARA:
+        # SI TIENE sale_order_id → No procesar puntos (vino del wizard)
+        # SI el estado CAMBIA a confirmado → Procesar puntos
+        
+        if 'state' in vals and vals['state'] == 'confirmed':
+            for record in self:
+                # Saltar si tiene sale_order_id (vino del wizard)
+                if record.sale_order_id:
+                    continue
+                
+                # Procesar puntos si tiene partner y asientos
+                if record.partner_id and record.seat_ids:
+                    points_earned = len(record.seat_ids) * 10
+                    new_total_points = record.partner_id.loyalty_points + points_earned
+                    
+                    # Actualizar nivel según puntos totales
+                    new_level = 'standard'
+                    if new_total_points > 1000:
+                        new_level = 'premium'
+                    elif new_total_points > 500:
+                        new_level = 'silver'
+                    
+                    record.partner_id.write({
+                        'loyalty_points': new_total_points,
+                        'member_level': new_level
+                    })
+        
+        return result
 
     def action_generate_ticket(self):
         """Generar código de secuencia si no existe y descargar el reporte PDF"""
@@ -163,8 +227,26 @@ class CinenvistaReservation(models.Model):
             if self.sale_order_id.state in ['draft', 'sent']:
                 self.sale_order_id.action_confirm()
         
-        # Cambiar estado de la reserva a confirmado
-        self.state = 'confirmed'
+        # Sumar puntos de lealtad: 10 puntos por entrada
+        points_earned = total_seats * 10
+        new_level = 'standard'
+        new_total_points = self.partner_id.loyalty_points + points_earned
+        
+        # Actualizar nivel según puntos totales
+        if new_total_points > 1000:
+            new_level = 'premium'
+        elif new_total_points > 500:
+            new_level = 'silver'
+        
+        # Cambiar estado de la reserva a confirmado y actualizar puntos en una sola operación
+        self.with_context(skip_loyalty_points=True).write({
+            'state': 'confirmed',
+        })
+        
+        self.partner_id.write({
+            'loyalty_points': new_total_points,
+            'member_level': new_level
+        })
         
         return True
 
