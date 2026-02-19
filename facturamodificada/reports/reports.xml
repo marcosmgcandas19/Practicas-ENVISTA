@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- PEDIDO DE VENTA - Modificaciones para Cliente "A" -->
         <template id="report_saleorder_modified" inherit_id="sale.report_saleorder_document">
-            <!-- Eliminar completamente el bloque Comercial (Salesperson) -->
-            <xpath expr="//div[@id='informations']//div[.//strong[contains(., 'Salesperson')]]" position="replace" optional="true"/>
             
-            <!-- Eliminar la columna de Impuestos (Taxes) -->
-            <xpath expr="//th[@name='th_taxes']" position="replace" optional="true"/>
-            <xpath expr="//td[@name='td_taxes']" position="replace" optional="true"/>
+            <xpath expr="//div[@id='informations']/div[@t-if='doc.user_id.name']/strong" position="replace">
+                
+                    <strong>Cliente:</strong>
+                    
+                
+            </xpath>
+            
+            <xpath expr="//th[@name='th_taxes']" position="replace"/>
+            <xpath expr="//td[@name='td_taxes']" position="replace"/>
         </template>
 
-        <!-- FACTURA - Modificaciones para Cliente "A" -->
         <template id="report_invoice_modified" inherit_id="account.report_invoice_document">
-            <!-- Eliminar la columna de Impuestos (Taxes) -->
-            <xpath expr="//th[@name='th_taxes']" position="replace" optional="true"/>
-            <xpath expr="//td[@name='td_taxes']" position="replace" optional="true"/>
+            <xpath expr="//th[@name='th_taxes']" position="replace"/>
+            <xpath expr="//td[@name='td_taxes']" position="replace"/>
         </template>
     </data>
 </odoo>
