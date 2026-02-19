@@ -3,13 +3,8 @@
     <data>
         <!-- PEDIDO DE VENTA - Modificaciones para Cliente "A" -->
         <template id="report_saleorder_modified" inherit_id="sale.report_saleorder_document">
-            <!-- Reemplazar el bloque del Salesperson por un bloque que muestre Cliente (partner) -->
-            <xpath expr="//div[@t-if='doc.user_id.name']" position="replace" optional="true">
-                <div class="col-auto col-3 mw-100 mb-2">
-                    <strong>Cliente:</strong><br/>
-                    <span class="m-0" t-field="doc.partner_id">Cliente</span>
-                </div>
-            </xpath>
+            <!-- Eliminar completamente el bloque Comercial (Salesperson) -->
+            <xpath expr="//div[@id='informations']//div[.//strong[contains(., 'Salesperson')]]" position="replace" optional="true"/>
             
             <!-- Eliminar la columna de Impuestos (Taxes) -->
             <xpath expr="//th[@name='th_taxes']" position="replace" optional="true"/>
