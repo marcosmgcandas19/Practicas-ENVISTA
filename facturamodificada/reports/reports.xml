@@ -1,19 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+        <!-- VISTA PREVIA-->
         <template id="report_saleorder_modified" inherit_id="sale.report_saleorder_document">
+
+            <!-- CREA UN ESTILO Y LO APLICA A LA VISTA -->
+            <xpath expr="//div[@class='page']" position="before">
+                <style>
+                    .custom-header-title {
+                        text-transform: uppercase !important;
+                        font-weight: bold !important;
+                    }
+
+                    .custom-total-style {
+                        font-size: 16px !important;
+                        font-weight: bold !important;
+                    }
+                </style>
+            </xpath>
+
+            <xpath expr="//div[@id='informations']" position="attributes">
+                <attribute name="class" add="custom-header-title" separator=" "/>
+            </xpath>
+
+            <xpath expr="//thead" position="attributes">
+                <attribute name="class" add="custom-header-title" separator=" "/>
+            </xpath>
+
+            <xpath expr="//div[@name='so_total_summary']" position="attributes">
+                <attribute name="class" add="custom-total-style" separator=" "/>
+            </xpath>
+
             
+            <!-- CAMPO PARA EL NOMBRE DEL CLIENTE -->
             <xpath expr="//div[@id='informations']/div[@t-if='doc.user_id.name']/strong" position="replace">
-                
                     <strong>Cliente:</strong>
-                    
-                
             </xpath>
             
+            <!-- CAMPO PARA LA FECHA DE ENTREGA-->
+            <xpath expr="//div[@name='informations_date']" position="after">
+                <div t-if="doc.commitment_date" class="col-auto col-3 mw-100 mb-2" name="commitment_date">
+                    <strong>Fecha de entrega:</strong><br/>
+                    <span class="m-0" t-field="doc.commitment_date" t-options='{"widget": "date"}'/>
+                </div>
+            </xpath>
+
+            
+            <!-- ELIMINA LA COLUMNA DE IMPUESTOS -->
             <xpath expr="//th[@name='th_taxes']" position="replace"/>
             <xpath expr="//td[@name='td_taxes']" position="replace"/>
+
+            <!-- AGREGA UNA COLUMNA PARA LA DESCRIPCIÓN -->
+            <xpath expr="//th[@name='th_quantity']" position="before">
+                <th name="th_custom_description" class="text-start">Descripción</th>
+            </xpath>
+
+            <xpath expr="//td[@name='td_quantity']" position="before">
+                <td name="td_custom_description" class="text-start">
+                    <span t-field="line.name"/>
+                </td>
+            </xpath>
+
         </template>
 
+        <!-- VISTA FACTURA -->
         <template id="report_invoice_modified" inherit_id="account.report_invoice_document">
             <xpath expr="//th[@name='th_taxes']" position="replace"/>
             <xpath expr="//td[@name='td_taxes']" position="replace"/>
