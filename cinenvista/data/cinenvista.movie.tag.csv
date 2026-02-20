@@ -1,0 +1,101 @@
+id,name,color
+tag_accion,Acción,1
+tag_aventura,Aventura,2
+tag_animacion,Animación,3
+tag_comedia,Comedia,4
+tag_crimen,Crimen,5
+tag_documental,Documental,6
+tag_drama,Drama,7
+tag_familia,Familia,8
+tag_fantasia,Fantasía,9
+tag_historia,Historia,10
+tag_terror,Terror,11
+tag_musica,Música,1
+tag_misterio,Misterio,2
+tag_romance,Romance,3
+tag_ciencia_ficcion,Ciencia Ficción,4
+tag_tv_movie,Película de TV,5
+tag_thriller,Thriller,6
+tag_guerra,Guerra,7
+tag_western,Western,8
+tag_biografia,Biografía,9
+tag_deporte,Deporte,10
+tag_musical,Musical,11
+tag_cine_negro,Cine Negro,1
+tag_gore,Gore,2
+tag_slasher,Slasher,3
+tag_psicologico,Psicológico,4
+tag_superheroes,Superhéroes,5
+tag_espionaje,Espionaje,6
+tag_artes_marciales,Artes Marciales,7
+tag_samurais,Samuráis,8
+tag_cyberpunk,Cyberpunk,9
+tag_steampunk,Steampunk,10
+tag_distopia,Distopía,11
+tag_post_apocaliptico,Post-apocalíptico,1
+tag_viajes_tiempo,Viajes en el tiempo,2
+tag_espacial,Espacial,3
+tag_alienigenas,Alienígenas,4
+tag_monstruos,Monstruos,5
+tag_zombis,Zombis,6
+tag_vampiros,Vampiros,7
+tag_hombres_lobo,Hombres lobo,8
+tag_sobrenatural,Sobrenatural,9
+tag_posesiones,Posesiones,10
+tag_asesinos_serie,Asesinos en serie,11
+tag_policial,Policial,1
+tag_judicial,Judicial,2
+tag_politico,Político,3
+tag_social,Social,4
+tag_epico,Épico,5
+tag_capa_espada,Capa y espada,6
+tag_piratas,Piratas,7
+tag_vikingos,Vikingos,8
+tag_romano,Peplum (Romanos),9
+tag_medieval,Medieval,10
+tag_siglo_xviii,Siglo XVIII,11
+tag_siglo_xix,Siglo XIX,1
+tag_años_20,Años 20,2
+tag_años_50,Años 50,3
+tag_años_80,Años 80,4
+tag_independiente,Cine Independiente,5
+tag_autor,Cine de Autor,6
+tag_experimental,Experimental,7
+tag_surrealista,Surrealista,8
+tag_expresionista,Expresionista,9
+tag_mudo,Cine Mudo,10
+tag_blanco_negro,Blanco y Negro,11
+tag_animacion_adultos,Animación para adultos,1
+tag_anime,Anime,2
+tag_stop_motion,Stop Motion,3
+tag_3d,Cine 3D,4
+tag_parodia,Parodia,5
+tag_satira,Sátira,6
+tag_humor_negro,Humor Negro,7
+tag_slapstick,Slapstick,8
+tag_road_movie,Road Movie,9
+tag_coming_of_age,Coming of Age,10
+tag_teen,Cine Juvenil,11
+tag_erotico,Erótico,1
+tag_mockumentary,Falso Documental,2
+tag_found_footage,Metraje Encontrado,3
+tag_catastrofes,Catástrofes,4
+tag_supervivencia,Supervivencia,5
+tag_secuestros,Secuestros,6
+tag_venganza,Venganza,7
+tag_robos,Robos y Atracos,8
+tag_mafia,Mafia,9
+tag_yakuza,Yakuza,10
+tag_triada,Tríada,11
+tag_Buddy_Movie,Buddy Movie,1
+tag_discapacidad,Discapacidad,2
+tag_enfermedad,Enfermedad,3
+tag_vejez,Vejez,4
+tag_infancia,Infancia,5
+tag_naturaleza,Naturaleza,6
+tag_educativo,Educativo,7
+tag_religion,Religión,8
+tag_filosofico,Filosófico,9
+tag_vanguardia,Vanguardia,10
+tag_underground,Underground,11
+tag_culto,Película de Culto,1

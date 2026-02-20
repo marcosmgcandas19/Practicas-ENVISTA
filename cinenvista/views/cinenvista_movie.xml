@@ -7,6 +7,7 @@
             <tree>
                 <field name="title"/>
                 <field name="rating"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="tmdb_id" optional="hide"/>
             </tree>
         </field>
@@ -25,6 +26,7 @@
                         <group>
                             <field name="title" placeholder="Ingresa el título"/>
                             <field name="rating"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="tmdb_id" readonly="1" invisible="1"/>
                         </group>
                         <group>

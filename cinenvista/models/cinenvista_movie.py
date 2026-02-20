@@ -31,6 +31,11 @@ class CinenvistaMovie(models.Model):
         default=0.0,
         help='Puntuación de 0 a 10 (obtenida de TMDB)'
     )
+    tag_ids = fields.Many2many(
+        'cinenvista.movie.tag',
+        string='Etiquetas',
+        help='Etiquetas asociadas a la película'
+    )
     
     # ============ CAMPOS DE INTEGRACIÓN EXTERNA ============
     image_url = fields.Char(

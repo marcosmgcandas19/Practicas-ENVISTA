@@ -4,6 +4,9 @@
 
     <menuitem id="menu_movie" name="Películas" parent="menu_cinenvista_root" 
               action="action_cinenvista_movie" sequence="10"/>
+    
+    <menuitem id="menu_movie_tag" name="Etiquetas" parent="menu_cinenvista_root" 
+              action="action_cinenvista_movie_tag" sequence="15"/>
               
     <menuitem id="menu_room" name="Salas" parent="menu_cinenvista_root" 
               action="action_cinenvista_room" sequence="20"/>

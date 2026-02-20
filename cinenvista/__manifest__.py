@@ -19,12 +19,14 @@
         # Datos iniciales
         'data/product.product.csv',                    # Productos: Entrada Regular, VIP
         'data/cinenvista_sequence_tickets.xml',        # Secuencia para códigos de ticket
+        'data/cinenvista.movie.tag.csv',               # Etiquetas de películas
         
         # Seguridad y permisos
         'security/ir.model.access.csv',                # Control de acceso a modelos
         
         # Vistas del backend
         'views/cinenvista_movie.xml',                  # Películas
+        'views/cinenvista_movie_tag.xml',              # Etiquetas de películas
         'views/cinenvista_room.xml',                   # Salas
         'views/cinenvista_screening.xml',              # Sesiones de proyección
         'views/cinenvista_reservation.xml',            # Reservas
