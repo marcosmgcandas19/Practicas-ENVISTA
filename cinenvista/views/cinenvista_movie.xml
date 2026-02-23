@@ -43,9 +43,38 @@
         </field>
     </record>
 
+    <record id="view_movie_search" model="ir.ui.view">
+        <field name="name">cinenvista.movie.search</field>
+        <field name="model">cinenvista.movie</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- Campos de búsqueda rápida -->
+                <field name="title" string="Título"/>
+                <field name="tag_ids" string="Etiquetas"/>
+                
+                <separator/>
+                
+                <!-- Filtros personalizados -->
+                <filter name="highlighted_movies" 
+                        string="Películas Destacadas" 
+                        domain="[('rating', '&gt;', 5)]"/>
+                
+                <separator/>
+                
+                <!-- Agrupaciones -->
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_by_tags" 
+                            string="Etiquetas" 
+                            context="{'group_by': 'tag_ids'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="action_cinenvista_movie" model="ir.actions.act_window">
         <field name="name">Películas</field>
         <field name="res_model">cinenvista.movie</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_movie_search"/>
     </record>
 </odoo>
