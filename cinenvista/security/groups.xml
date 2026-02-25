@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Categoría de seguridad para Cinenvista -->
+    <record id="module_category_cinenvista" model="ir.module.category">
+        <field name="name">Cinenvista</field>
+        <field name="description">Categoría de seguridad para el módulo Cinenvista</field>
+        <field name="sequence">100</field>
+    </record>
+
+    <!-- Grupo base: Taquillero (Box Office) -->
+    <!-- Perfil operativo - Enfocado en venta rápida y gestión de reservas -->
+    <record id="group_cinenvista_box_office" model="res.groups">
+        <field name="name">Taquillero</field>
+        <field name="category_id" ref="module_category_cinenvista"/>
+        <field name="comment">Perfil operativo enfocado en venta rápida y gestión de reservas. Acceso para crear y gestionar reservas.</field>
+    </record>
+
+    <!-- Grupo intermedio: Gestor de Cartelera (Content Manager) -->
+    <!-- Perfil logístico - Se encarga de películas, sesiones y horarios -->
+    <record id="group_cinenvista_content_manager" model="res.groups">
+        <field name="name">Gestor de Cartelera</field>
+        <field name="category_id" ref="module_category_cinenvista"/>
+        <field name="comment">Perfil logístico encargado de la gestión de películas, creación de sesiones y organización de horarios.</field>
+        <field name="implied_ids" eval="[(4, ref('group_cinenvista_box_office'))]"/>
+    </record>
+
+    <!-- Grupo superior: Administrador del Cine (Manager) -->
+    <!-- "Superusuario" - Control total sobre configuración técnica -->
+    <record id="group_cinenvista_manager" model="res.groups">
+        <field name="name">Administrador del Cine</field>
+        <field name="category_id" ref="module_category_cinenvista"/>
+        <field name="comment">Superusuario con control total sobre salas, butacas, configuraciones técnicas y todos los aspectos del cine.</field>
+        <field name="implied_ids" eval="[(4, ref('group_cinenvista_content_manager'))]"/>
+    </record>
+</odoo>

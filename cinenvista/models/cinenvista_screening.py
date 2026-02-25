@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-
+from datetime import datetime, date, time
 
 class CinenvistaScreening(models.Model):
     """
@@ -42,6 +42,12 @@ class CinenvistaScreening(models.Model):
         compute='_compute_available_seats',
         help='Total de asientos disponibles en esta sesión'
     )
+    is_future = fields.Boolean(
+        string='¿Es futura?',
+        compute='_compute_is_future',
+        store=True,
+        help='Indica si la sesión ocurre hoy o en el futuro'
+    )
 
     # ============ RELACIONES ============
     reservation_ids = fields.One2many(
@@ -80,3 +86,27 @@ class CinenvistaScreening(models.Model):
             confirmed = record.reservation_ids.filtered(lambda r: r.state == 'confirmed')
             reserved = sum(confirmed.mapped('seat_qty'))
             record.available_seats = max(0, capacity - reserved)
+
+    @api.depends('start_time')
+    def _compute_is_future(self):
+        """
+        Determina si la sesión ocurre hoy o en el futuro.
+        Se utiliza para la regla de registro que restringe la visibilidad del taquillero.
+        """
+        from datetime import datetime, date, time as dt_time
+        today_start = datetime.combine(date.today(), dt_time.min)
+        
+        for record in self:
+            try:
+                if record.start_time:
+                    # Convertir a datetime si es necesario y comparar
+                    start_dt = record.start_time
+                    if isinstance(start_dt, str):
+                        from dateutil import parser
+                        start_dt = parser.parse(start_dt)
+                    record.is_future = start_dt >= today_start
+                else:
+                    record.is_future = False
+            except Exception:
+                # Si hay error, asignar False (sesión no futura)
+                record.is_future = False

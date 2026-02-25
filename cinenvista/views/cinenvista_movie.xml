@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="title"/>
+                <field name="state"/>
                 <field name="rating"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="tmdb_id" optional="hide"/>
@@ -19,9 +20,13 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_get_movie" string="Buscar Pelicula" type="object" class="oe_highlight"/>
+                    <button name="action_get_movie" string="Buscar Película" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" options="{'clickable': True}"/>
                 </header>
                 <sheet>
+                    <div class="alert alert-info" invisible="state != 'archived'" role="alert">
+                        Esta película ha sido retirada.
+                    </div>
                     <group>
                         <group>
                             <field name="title" placeholder="Ingresa el título"/>
@@ -48,24 +53,13 @@
         <field name="model">cinenvista.movie</field>
         <field name="arch" type="xml">
             <search>
-                <!-- Campos de búsqueda rápida -->
                 <field name="title" string="Título"/>
                 <field name="tag_ids" string="Etiquetas"/>
-                
                 <separator/>
-                
-                <!-- Filtros personalizados -->
-                <filter name="highlighted_movies" 
-                        string="Películas Destacadas" 
-                        domain="[('rating', '&gt;', 5)]"/>
-                
+                <filter name="highlighted_movies" string="Películas Destacadas" domain="[('rating', '&gt;', 5)]"/>
                 <separator/>
-                
-                <!-- Agrupaciones -->
                 <group expand="0" string="Agrupar por">
-                    <filter name="group_by_tags" 
-                            string="Etiquetas" 
-                            context="{'group_by': 'tag_ids'}"/>
+                    <filter name="group_by_tags" string="Etiquetas" context="{'group_by': 'tag_ids'}"/>
                 </group>
             </search>
         </field>

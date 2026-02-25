@@ -36,6 +36,17 @@ class CinenvistaMovie(models.Model):
         string='Etiquetas',
         help='Etiquetas asociadas a la película'
     )
+    state = fields.Selection(
+        selection=[
+            ('draft', 'Borrador'),
+            ('coming_soon', 'Próximamente'),
+            ('in_theaters', 'En Cartelera'),
+            ('archived', 'Retirada'),
+        ],
+        string='Estado',
+        default='draft',
+        help='Estado actual de la película'
+    )
     
     # ============ CAMPOS DE INTEGRACIÓN EXTERNA ============
     image_url = fields.Char(
