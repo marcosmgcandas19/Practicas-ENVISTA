@@ -2,124 +2,34 @@
 <odoo>
     <!-- ====== REGLAS DE REGISTRO (RECORD RULES) ====== -->
     
-    <!-- Nota: Las reglas de registro se aplican a nivel de modelo y filtran registros basados en dominios.
-             Son el nivel más fino de seguridad en Odoo después de los permisos de acceso. -->
-
-    <!-- ========== REGLAS PARA TAQUILLERO (box_office) ========== -->
+    <!-- ========== REGLAS PARA TAQUILLERO  ========== -->
     
     <!-- REGLA 1: Visibilidad Temporal - Solo sesiones presentes/futuras -->
-    <!-- Restricción: Taquillero solo VE sesiones que aún no han pasado -->
-    <!-- Utiliza el campo computed 'is_future' que se calcula automáticamente -->
+    <!-- Restricción: Taquillero solo ve sesiones que aún no han pasado -->
     <record id="rule_screening_box_office_future" model="ir.rule">
         <field name="name">Screening - Taquillero: Solo hoy y futuro</field>
         <field name="model_id" ref="model_cinenvista_screening"/>
         <field name="groups" eval="[(4, ref('group_cinenvista_box_office'))]"/>
         <!-- Dominio: Solo sesiones donde is_future = True -->
         <field name="domain_force">[('is_future', '=', True)]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="False"/>
-        <field name="perm_create" eval="False"/>
-        <field name="perm_unlink" eval="False"/>
     </record>
 
     <!-- REGLA 2: Propiedad de Reservas -->
-    <!-- Restricción: Taquillero solo EDITA las reservas que él creó -->
+    <!-- Restricción: Taquillero solo puede editar las reservas que él creó -->
     <record id="rule_reservation_box_office_own" model="ir.rule">
         <field name="name">Reservation - Taquillero: Solo sus propias reservas</field>
         <field name="model_id" ref="model_cinenvista_reservation"/>
         <field name="groups" eval="[(4, ref('group_cinenvista_box_office'))]"/>
         <field name="domain_force">[('create_uid', '=', user.id)]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="False"/>
     </record>
 
     <!-- REGLA 3: Películas Activas -->
-    <!-- Restricción: Taquillero solo VE películas "En Cartelera" -->
+    <!-- Restricción: Taquillero solo puede ver películas "En Cartelera" -->
     <record id="rule_movie_box_office_in_theaters" model="ir.rule">
         <field name="name">Movie - Taquillero: Solo "En Cartelera"</field>
         <field name="model_id" ref="model_cinenvista_movie"/>
         <field name="groups" eval="[(4, ref('group_cinenvista_box_office'))]"/>
         <field name="domain_force">[('state', '=', 'in_theaters')]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="False"/>
-        <field name="perm_create" eval="False"/>
-        <field name="perm_unlink" eval="False"/>
-    </record>
-
-    <!-- ========== REGLAS PARA GESTOR DE CARTELERA (content_manager) ========== -->
-    
-    <!-- Acceso permisivo a películas (puede ver todas, incluso borradores y archivadas) -->
-    <record id="rule_movie_content_manager_all" model="ir.rule">
-        <field name="name">Movie - Gestor: Acceso total</field>
-        <field name="model_id" ref="model_cinenvista_movie"/>
-        <field name="groups" eval="[(4, ref('group_cinenvista_content_manager'))]"/>
-        <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
-    </record>
-
-    <!-- Acceso permisivo a sesiones (puede ver todas) -->
-    <record id="rule_screening_content_manager_all" model="ir.rule">
-        <field name="name">Screening - Gestor: Acceso total</field>
-        <field name="model_id" ref="model_cinenvista_screening"/>
-        <field name="groups" eval="[(4, ref('group_cinenvista_content_manager'))]"/>
-        <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
-    </record>
-
-    <!-- Acceso permisivo a reservas (lectura solamente) -->
-    <record id="rule_reservation_content_manager_read_only" model="ir.rule">
-        <field name="name">Reservation - Gestor: Solo lectura</field>
-        <field name="model_id" ref="model_cinenvista_reservation"/>
-        <field name="groups" eval="[(4, ref('group_cinenvista_content_manager'))]"/>
-        <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="False"/>
-        <field name="perm_create" eval="False"/>
-        <field name="perm_unlink" eval="False"/>
-    </record>
-
-    <!-- ========== REGLAS PARA ADMINISTRADOR (manager) ========== -->
-    <!-- El administrador tiene acceso sin restricciones a todos los modelos -->
-    
-    <record id="rule_movie_manager_all" model="ir.rule">
-        <field name="name">Movie - Admin: Acceso sin restricciones</field>
-        <field name="model_id" ref="model_cinenvista_movie"/>
-        <field name="groups" eval="[(4, ref('group_cinenvista_manager'))]"/>
-        <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
-    </record>
-
-    <record id="rule_screening_manager_all" model="ir.rule">
-        <field name="name">Screening - Admin: Acceso sin restricciones</field>
-        <field name="model_id" ref="model_cinenvista_screening"/>
-        <field name="groups" eval="[(4, ref('group_cinenvista_manager'))]"/>
-        <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
-    </record>
-
-    <record id="rule_reservation_manager_all" model="ir.rule">
-        <field name="name">Reservation - Admin: Acceso sin restricciones</field>
-        <field name="model_id" ref="model_cinenvista_reservation"/>
-        <field name="groups" eval="[(4, ref('group_cinenvista_manager'))]"/>
-        <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
     </record>
 
 </odoo>

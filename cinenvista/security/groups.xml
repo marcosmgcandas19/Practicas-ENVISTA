@@ -7,16 +7,15 @@
         <field name="sequence">100</field>
     </record>
 
-    <!-- Grupo base: Taquillero (Box Office) -->
-    <!-- Perfil operativo - Enfocado en venta rápida y gestión de reservas -->
+    <!-- Grupo base: Taquillero -->
+
     <record id="group_cinenvista_box_office" model="res.groups">
         <field name="name">Taquillero</field>
         <field name="category_id" ref="module_category_cinenvista"/>
         <field name="comment">Perfil operativo enfocado en venta rápida y gestión de reservas. Acceso para crear y gestionar reservas.</field>
     </record>
 
-    <!-- Grupo intermedio: Gestor de Cartelera (Content Manager) -->
-    <!-- Perfil logístico - Se encarga de películas, sesiones y horarios -->
+    <!-- Grupo intermedio: Gestor de Cartelera -->
     <record id="group_cinenvista_content_manager" model="res.groups">
         <field name="name">Gestor de Cartelera</field>
         <field name="category_id" ref="module_category_cinenvista"/>
@@ -24,8 +23,8 @@
         <field name="implied_ids" eval="[(4, ref('group_cinenvista_box_office'))]"/>
     </record>
 
-    <!-- Grupo superior: Administrador del Cine (Manager) -->
-    <!-- "Superusuario" - Control total sobre configuración técnica -->
+    <!-- Grupo superior: Administrador del Cine -->
+
     <record id="group_cinenvista_manager" model="res.groups">
         <field name="name">Administrador del Cine</field>
         <field name="category_id" ref="module_category_cinenvista"/>
