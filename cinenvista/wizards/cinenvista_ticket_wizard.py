@@ -152,12 +152,13 @@ class CinenvistaTicketWizard(models.TransientModel):
         Procesa una venta normal sin canjear puntos.
         El cliente gana 10 puntos por cada entrada comprada.
         Se aplica descuento según el nuevo nivel de membresía.
+        Además busca y aplica descuentos por promociones vigentes.
         """
         # Calcular puntos ganados y nuevo nivel
         total_entries = len(self.selected_seat_ids)
         self._update_customer_loyalty_points(points_earned=total_entries * 10)
         
-        # Crear pedido de venta con descuento por nivel
+        # Crear pedido de venta con descuento por nivel Y promociones
         sale_order = self._create_sale_order_with_entries(
             apply_discount=True
         )
@@ -239,7 +240,7 @@ class CinenvistaTicketWizard(models.TransientModel):
         Args:
             free_vip_qty (int): Cantidad de VIPs gratis
             free_regular_qty (int): Cantidad de Regulares gratis
-            apply_discount (bool): Si aplicar descuento por nivel de membresía
+            apply_discount (bool): Si aplicar descuento por nivel de membresía y promociones
             
         Returns:
             sale.order: El pedido de venta creado
@@ -248,11 +249,10 @@ class CinenvistaTicketWizard(models.TransientModel):
             'partner_id': self.partner_id.id,
         })
         
-        # Calcular descuento si se debe aplicar
+        # Calcular descuento total (membresía + promociones acumulables)
         discount = 0.0
         if apply_discount:
-            level = self._calculate_member_level(self.partner_id.loyalty_points)
-            discount = self._get_discount_by_level(level)
+            discount = self._calculate_accumulated_discount()
         
         # Crear líneas de pedido
         order_lines = self._prepare_order_lines(free_vip_qty, free_regular_qty, discount)
@@ -341,6 +341,76 @@ class CinenvistaTicketWizard(models.TransientModel):
         - Standard: 0%
         """
         return {'premium': 20.0, 'silver': 10.0}.get(level, 0.0)
+
+    # ============ MÉTODOS AUXILIARES (PROMOCIONES) ============
+    def _get_applicable_promotions(self):
+        """
+        Busca promociones activas que coincidan con la fecha de la sesión.
+        Las promociones pueden ser:
+        - fixed: Se aplican un día específico de la semana
+        - range: Se aplican en un rango de fechas
+        
+        Returns:
+            cinenvista.promotion: Recordset con promociones aplicables
+        """
+        from datetime import datetime
+        
+        if not self.screening_id:
+            return self.env['cinenvista.promotion']
+        
+        screening_datetime = self.screening_id.start_time
+        screening_date = screening_datetime.date()
+        screening_day_of_week = screening_datetime.weekday()
+        
+        # Buscar promociones activas
+        active_promotions = self.env['cinenvista.promotion'].search([
+            ('active', '=', True),
+        ])
+        
+        applicable = self.env['cinenvista.promotion']
+        
+        for promo in active_promotions:
+            # Promociones por día fijo de la semana
+            if promo.promo_type == 'fixed':
+                # En Odoo, weekday(): 0=Lunes, 6=Domingo
+                # En Odoo Selection: 0=Lunes, ..., 6=Domingo
+                if promo.day_of_week == screening_day_of_week:
+                    applicable |= promo
+            
+            # Promociones por rango de fechas
+            elif promo.promo_type == 'range':
+                if promo.date_start <= screening_date <= promo.date_end:
+                    applicable |= promo
+        
+        return applicable
+
+    def _calculate_accumulated_discount(self):
+        """
+        Calcula el descuento total acumulado de:
+        1. Descuento por nivel de membresía del cliente
+        2. Descuentos de promociones vigentes (acumulables)
+        
+        El descuento final es la suma de ambos (máximo 100%).
+        
+        Returns:
+            float: Porcentaje de descuento acumulado (ej: 30.0 para 30%)
+        """
+        # Descuento por nivel de membresía
+        level = self._calculate_member_level(self.partner_id.loyalty_points)
+        membership_discount = self._get_discount_by_level(level)
+        
+        # Descuentos por promociones vigentes
+        promotion_discount = 0.0
+        applicable_promos = self._get_applicable_promotions()
+        
+        for promo in applicable_promos:
+            promotion_discount += promo.discount
+        
+        # Sumar descuentos (acumulables)
+        total_discount = membership_discount + promotion_discount
+        
+        # Limitar a máximo 100%
+        return min(total_discount, 100.0)
 
     # ============ MÉTODOS AUXILIARES (RESERVAS) ============
     def _create_reservation(self, sale_order):

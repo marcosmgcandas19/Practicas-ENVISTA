@@ -15,22 +15,25 @@
     ],
     
     # ============ ARCHIVOS DE DATOS Y VISTAS ============
-    # El orden es crítico: Seguridad -> Datos -> Vistas -> Menús
+    # El orden es crítico: Seguridad -> Estructura de Menús -> Vistas -> Wizards
     'data': [
         # 1. Seguridad y permisos (Indispensable cargar primero)
         'security/groups.xml',                         # Categoría y Grupos de seguridad
         'security/ir.model.access.csv',                # Control de acceso (ACL)
         'security/rules.xml',                          # Reglas de registro (Record Rules)
         
-        # 2. Configuración técnica
+        # 2. Configuración técnica y secuencias
         'data/cinenvista_sequence_tickets.xml',        # Secuencia para códigos de ticket
         
         # 3. Carga de datos maestros (CSV)
-        # Se cargan aquí para que Odoo ya conozca los modelos y permisos
         'data/product.product.csv',                    # Productos: Entrada Regular, VIP
         'data/cinenvista.movie.tag.csv',               # Etiquetas de películas
-        
-        # 4. Vistas del backend (Definición de la interfaz)
+
+        # 4. Estructura Raíz de Menús
+        # Lo movemos aquí para que el "parent" esté disponible para todas las vistas siguientes
+        'views/cinenvista_menus.xml',
+
+        # 5. Vistas del backend (Acciones y Formularios)
         'views/cinenvista_movie.xml',                  # Películas
         'views/cinenvista_movie_tag.xml',              # Etiquetas
         'views/cinenvista_room.xml',                   # Salas
@@ -38,13 +41,11 @@
         'views/cinenvista_reservation.xml',            # Reservas
         'views/res_partner.xml',                       # Extensión de contactos
         'views/cinenvista_seat.xml',                   # Butacas
+        'views/cinenvista_promotion.xml',              # Promociones y campañas
         
-        # 5. Reportes y Wizards
+        # 6. Reportes y Wizards
         'reports/report_ticket_template.xml',          # Reporte PDF de tickets
         'wizards/cinenvista_ticket_wizard.xml',        # Asistente de venta rápida
-        
-        # 6. Menús (Siempre al final para que las acciones ya existan)
-        'views/cinenvista_menus.xml',                  # Menús de navegación
     ],
     
     # ============ CONFIGURACIÓN DE INSTALACIÓN ============

@@ -2,6 +2,30 @@
 <odoo>
     <!-- ====== REGLAS DE REGISTRO (RECORD RULES) ====== -->
     
+    <!-- ========== REGLAS PARA ADMINISTRADOR ========== -->
+    <!-- El administrador tiene acceso sin restricciones a todos los modelos -->
+    
+    <record id="rule_admin_unrestricted_access" model="ir.rule">
+        <field name="name">Admin: Acceso sin restricciones</field>
+        <field name="model_id" ref="model_cinenvista_screening"/>
+        <field name="groups" eval="[(4, ref('group_cinenvista_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_admin_reservation_unrestricted" model="ir.rule">
+        <field name="name">Reservation - Admin: Acceso sin restricciones</field>
+        <field name="model_id" ref="model_cinenvista_reservation"/>
+        <field name="groups" eval="[(4, ref('group_cinenvista_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="rule_admin_movie_unrestricted" model="ir.rule">
+        <field name="name">Movie - Admin: Acceso sin restricciones</field>
+        <field name="model_id" ref="model_cinenvista_movie"/>
+        <field name="groups" eval="[(4, ref('group_cinenvista_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
     <!-- ========== REGLAS PARA TAQUILLERO  ========== -->
     
     <!-- REGLA 1: Visibilidad Temporal - Solo sesiones presentes/futuras -->

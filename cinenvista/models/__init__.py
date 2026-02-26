@@ -9,6 +9,7 @@ Modelos disponibles:
 - cinenvista_screening: Sesiones/proyecciones
 - cinenvista_reservation: Reservas de entradas
 - cinenvista_res_partner: Extensión de contactos con fidelización
+- cinenvista_promotion: Promociones y campañas comerciales
 """
 
 from . import cinenvista_movie
@@ -18,3 +19,4 @@ from . import room_seat
 from . import cinenvista_screening
 from . import cinenvista_res_partner
 from . import cinenvista_reservation
+from . import cinenvista_promotion

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cinenvista_promotion_form" model="ir.ui.view">
+        <field name="name">cinenvista.promotion.form</field>
+        <field name="model">cinenvista.promotion</field>
+        <field name="arch" type="xml">
+            <form string="Promoción">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre de la Campaña"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="discount" widget="float"/>
+                            <field name="promo_type" widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Configuración de Vigencia" invisible="promo_type != 'fixed'">
+                            <field name="day_of_week" 
+                                   required="promo_type == 'fixed'"/>
+                        </group>
+                        <group string="Rango de Fechas" invisible="promo_type != 'range'">
+                            <field name="date_start" 
+                                   required="promo_type == 'range'"/>
+                            <field name="date_end" 
+                                   required="promo_type == 'range'"/>
+                        </group>
+                    </group>
+
+                    <separator string="Productos Promocionados"/>
+                    <field name="product_ids" widget="many2many_tags"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cinenvista_promotion_tree" model="ir.ui.view">
+        <field name="name">cinenvista.promotion.tree</field>
+        <field name="model">cinenvista.promotion</field>
+        <field name="arch" type="xml">
+            <tree string="Promociones">
+                <field name="name"/>
+                <field name="discount" string="Descuento (%)"/>
+                <field name="promo_type" string="Tipo"/>
+                <field name="active" decoration-muted="not active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_cinenvista_promotion_search" model="ir.ui.view">
+        <field name="name">cinenvista.promotion.search</field>
+        <field name="model">cinenvista.promotion</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Promociones">
+                <field name="name" string="Nombre"/>
+                <field name="product_ids" string="Productos"/>
+                <separator/>
+                <filter name="filter_active" string="Activas" domain="[('active', '=', True)]"/>
+                <filter name="filter_inactive" string="Inactivas" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="filter_fixed" string="Día Fijo" domain="[('promo_type', '=', 'fixed')]"/>
+                <filter name="filter_range" string="Rango de Fechas" domain="[('promo_type', '=', 'range')]"/>
+                <separator/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_by_type" string="Tipo de Promoción" context="{'group_by': 'promo_type'}"/>
+                    <filter name="group_by_active" string="Estado" context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cinenvista_promotion" model="ir.actions.act_window">
+        <field name="name">Promociones</field>
+        <field name="res_model">cinenvista.promotion</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_cinenvista_promotion_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primera promoción
+            </p>
+            <p>
+                Se pueden gestionar campañas comerciales para aplicar descuentos.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_cinenvista_promotion"
+        name="Promociones"
+        parent="menu_cinenvista_root" 
+        action="action_cinenvista_promotion"
+        sequence="55"/>
+
+</odoo>
