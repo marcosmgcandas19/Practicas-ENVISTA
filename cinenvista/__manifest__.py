@@ -12,6 +12,7 @@
         'contacts',      # Para extender res.partner con fidelización
         'product',       # Para crear productos de entradas
         'sale',          # Para crear órdenes de venta
+        'stock',         # Para gestionar stock de consumibles
     ],
     
     # ============ ARCHIVOS DE DATOS Y VISTAS ============
@@ -29,8 +30,7 @@
         'data/product.product.csv',                    # Productos: Entrada Regular, VIP
         'data/cinenvista.movie.tag.csv',               # Etiquetas de películas
 
-        # 4. Estructura Raíz de Menús
-        # Lo movemos aquí para que el "parent" esté disponible para todas las vistas siguientes
+        # 4. Estructura Raíz de Menús (DEBE ir ANTES de las vistas que definen menuitems)
         'views/cinenvista_menus.xml',
 
         # 5. Vistas del backend (Acciones y Formularios)

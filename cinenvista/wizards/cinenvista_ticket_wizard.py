@@ -74,8 +74,29 @@ class CinenvistaTicketWizard(models.TransientModel):
         help='Butacas disponibles a seleccionar para la reserva'
     )
 
+    # Consumibles (snacks, bebidas, etc.)
+    consumable_line_ids = fields.One2many(
+        'cinenvista.ticket.wizard.line',
+        'wizard_id',
+        string='Consumibles',
+        help='Líneas de snacks y bebidas a vender'
+    )
+
+    # Total de consumibles (computado)
+    consumable_total = fields.Float(
+        string='Total Consumibles',
+        compute='_compute_consumable_total',
+        store=False,
+        help='Total de consumibles seleccionados'
+    )
+
 
     # ============ MÉTODOS COMPUTADOS ============
+    @api.depends('consumable_line_ids.subtotal')
+    def _compute_consumable_total(self):
+        """Calcula el total de consumibles"""
+        for wizard in self:
+            wizard.consumable_total = sum(line.subtotal for line in wizard.consumable_line_ids)
     @api.depends('screening_id')
     def _compute_occupied_seats(self):
         """
@@ -264,7 +285,8 @@ class CinenvistaTicketWizard(models.TransientModel):
 
     def _prepare_order_lines(self, free_vip_qty=0, free_regular_qty=0, discount=0.0):
         """
-        Prepara las líneas del pedido separando entradas gratis de pagadas.
+        Prepara las líneas del pedido separando entradas gratis de pagadas,
+        además de incluir los consumibles (snacks, bebidas) seleccionados.
         
         Returns:
             list: Lista de tuplas (0, 0, {datos_línea}) para crear sale.order.line
@@ -273,6 +295,7 @@ class CinenvistaTicketWizard(models.TransientModel):
         vip_product_id = self.env.ref('cinenvista.product_ticket_vip').id
         regular_product_id = self.env.ref('cinenvista.product_ticket_regular').id
         
+        # ============ LÍNEAS DE ENTRADAS ============
         # Líneas de entradas regulares
         if self.qty_regular > 0:
             if free_regular_qty > 0:
@@ -304,6 +327,15 @@ class CinenvistaTicketWizard(models.TransientModel):
                     self.qty_vip - free_vip_qty,
                     discount=discount
                 ))
+        
+        # ============ LÍNEAS DE CONSUMIBLES ============
+        # Agregar cada consumible como línea del pedido
+        for consumable_line in self.consumable_line_ids:
+            order_lines.append(self._create_line_data(
+                consumable_line.product_id.id,
+                consumable_line.quantity,
+                discount=0.0  # Los consumibles no reciben descuento de fidelización
+            ))
         
         return order_lines
 

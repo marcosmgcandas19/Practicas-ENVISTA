@@ -1,25 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Root menu definition - must load before other views that reference it -->
     <menuitem id="menu_cinenvista_root" name="CineVista" sequence="10"/>
-
-    <menuitem id="menu_movie" name="Películas" parent="menu_cinenvista_root" 
-              action="action_cinenvista_movie" sequence="10"/>
-    
-    <menuitem id="menu_movie_tag" name="Etiquetas" parent="menu_cinenvista_root" 
-              action="action_cinenvista_movie_tag" sequence="15"/>
-              
-    <menuitem id="menu_room" name="Salas" parent="menu_cinenvista_root" 
-              action="action_cinenvista_room" sequence="20"/>
-    
-    <menuitem id="menu_seat" name="Butacas" parent="menu_cinenvista_root" 
-              action="action_cinenvista_seat" sequence="25"/>
-              
-    <menuitem id="menu_screening" name="Cartelera" parent="menu_cinenvista_root" 
-              action="action_cinenvista_screening" sequence="30"/>
-    
-    <menuitem id="menu_reservation" name="Reservas" parent="menu_cinenvista_root" 
-              action="action_cinenvista_reservation" sequence="40"/>
-
-    <menuitem id="menu_ticket_wizard" name="Venta Rápida" parent="menu_cinenvista_root" 
-              action="action_ticket_wizard" sequence="50"/>
 </odoo>

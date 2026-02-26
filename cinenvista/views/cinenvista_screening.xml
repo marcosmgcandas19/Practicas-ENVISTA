@@ -47,4 +47,7 @@
         <field name="res_model">cinenvista.screening</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+    <menuitem id="menu_screening" name="Cartelera" parent="menu_cinenvista_root" 
+              action="action_cinenvista_screening" sequence="30"/>
 </odoo>

@@ -1,3 +1,9 @@
 id,name,type,list_price,default_code
 product_ticket_regular,Entrada regular,service,6.0,TKT-REG
 product_ticket_vip,Entrada VIP,service,12.0,TKT-VIP
+prod_popcorn_small,Palomitas Pequeñas,consu,4.50,BAR-POP-S
+prod_popcorn_med,Palomitas Medianas,consu,6.00,BAR-POP-M
+prod_popcorn_large,Palomitas Grandes,consu,7.50,BAR-POP-L
+prod_soda_small,Refresco Pequeño,consu,3.00,BAR-SOD-S
+prod_soda_large,Refresco Grande,consu,4.50,BAR-SOD-L
+prod_choco_bar,Barra de Chocolate,consu,2.50,BAR-CHO-01

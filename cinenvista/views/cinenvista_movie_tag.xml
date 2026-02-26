@@ -31,4 +31,7 @@
         <field name="res_model">cinenvista.movie.tag</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+    <menuitem id="menu_movie_tag" name="Etiquetas" parent="menu_cinenvista_root" 
+              action="action_cinenvista_movie_tag" sequence="15"/>
 </odoo>

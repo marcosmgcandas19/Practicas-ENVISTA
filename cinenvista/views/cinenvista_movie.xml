@@ -71,4 +71,7 @@
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_movie_search"/>
     </record>
+
+    <menuitem id="menu_movie" name="Películas" parent="menu_cinenvista_root" 
+              action="action_cinenvista_movie" sequence="10"/>
 </odoo>

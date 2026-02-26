@@ -31,56 +31,87 @@
                         <h1>Venta Rápida de Entradas</h1>
                     </div>
 
-                    <!-- CAMPOS OCULTOS (necesarios para cálculos pero no visibles) -->
-                    <field name="room_id" invisible="1" help="ID de sala (para filtro de butacas)"/>
-                    <field name="occupied_seat_ids" invisible="1" help="Butacas ocupadas (para validación)"/>
+                    <!-- CAMPOS OCULTOS -->
+                    <field name="room_id" invisible="1"/>
+                    <field name="occupied_seat_ids" invisible="1"/>
 
                     <!-- SECCIÓN 1: INFORMACIÓN GENERAL -->
                     <group>
                         <group string="Información General">
                             <field
                                 name="screening_id"
-                                options="{'no_create': True, 'no_open': True}"
-                                help="Selecciona la sesión de cine"/>
+                                options="{'no_create': True, 'no_open': True}"/>
                             <field
                                 name="partner_id"
-                                options="{'no_create_edit': True}"
-                                help="Cliente comprador (búsqueda)"
-                            />
+                                options="{'no_create_edit': True}"/>
                         </group>
 
                         <!-- SECCIÓN 2: CANTIDADES DE ENTRADAS -->
                         <group string="Cantidades">
-                            <field name="qty_regular" help="Cantidad de entradas regulares"/>
-                            <field name="qty_vip" help="Cantidad de entradas VIP"/>
+                            <field name="qty_regular"/>
+                            <field name="qty_vip"/>
                         </group>
                     </group>
 
-                    <!-- SECCIÓN 3: PROGRAMA DE FIDELIZACIÓN -->
-                    <group string="Programa de Fidelización" name="loyalty_section">
-                        <field name="partner_id" invisible="1"/>
-                        <group>
+                    <!-- NOTEBOOK PARA TABS -->
+                    <notebook>
+                        <!-- TAB 1: ENTRADAS Y FIDELIZACIÓN -->
+                        <page string="Entradas" name="entries_tab">
+                            <!-- PROGRAMA DE FIDELIZACIÓN -->
+                            <group string="Programa de Fidelización">
+                                <field name="partner_id" invisible="1"/>
+                                <group>
+                                    <field
+                                        name="redeem_points"
+                                        widget="boolean_toggle"/>
+                                    <field
+                                        name="available_points"
+                                        readonly="1"/>
+                                </group>
+                            </group>
+                            
+                            <!-- SELECCIÓN DE BUTACAS -->
+                            <group string="Selección de Asientos">
+                                <field
+                                    name="selected_seat_ids"
+                                    widget="many2many_tags"
+                                    options="{'no_create': True}"
+                                    placeholder="Selecciona las butacas (debe coincidir con el total de entradas)"/>
+                            </group>
+                        </page>
+
+                        <!-- TAB 2: SNACKS & BEBIDAS (CONSUMIBLES) -->
+                        <page string="Snacks &amp; Bebidas" name="consumables_tab">
+                            <p class="oe_inline" style="font-size:14px;">
+                                Añade productos del bar para aumentar el ticket promedio
+                            </p>
                             <field
-                                name="redeem_points"
-                                widget="boolean_toggle"
-                                help="Marca para canjear puntos por entradas gratis"/>
-                            <field
-                                name="available_points"
-                                readonly="1"
-                                help="Puntos disponibles del cliente (100=1 entrada regular, 200=1 VIP)"/>
-                        </group>
-                    </group>
-                    
-                    <!-- SECCIÓN 4: SELECCIÓN DE BUTACAS -->
-                    <group string="Selección de Asientos">
-                        <field
-                            name="selected_seat_ids"
-                            widget="many2many_tags"
-                            options="{'no_create': True}"
-                            placeholder="Haz clic para seleccionar las butacas...
-                            Ejemplo: A5, B2, B3, C1 (debe coincidir con total de entradas)"
-                            help="Selecciona el mismo número de butacas que la cantidad total de entradas"/>
-                    </group>
+                                name="consumable_line_ids"
+                                widget="one2many"
+                                mode="tree">
+                                <tree editable="bottom" create="true" delete="true">
+                                    <field name="product_id" required="1"/>
+                                    <field name="quantity" required="1"/>
+                                    <field name="price_unit" readonly="1"/>
+                                    <field name="subtotal" readonly="1"/>
+                                    <field name="stock_available" readonly="1"/>
+                                </tree>
+                            </field>
+                            
+                            <!-- TOTAL DE CONSUMIBLES -->
+                            <div class="row">
+                                <div class="col-6"></div>
+                                <div class="col-6">
+                                    <div class="alert alert-info">
+                                        <strong>Total Consumibles:</strong>
+                                        <span class="float-right">
+                                            <field name="consumable_total" widget="monetary" readonly="1"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -98,4 +129,7 @@
         <field name="target">new</field>
         <field name="help">Asistente para realizar ventas rápidas de entradas, seleccionar butacas específicas y aplicar programas de fidelización</field>
     </record>
+
+    <menuitem id="menu_ticket_wizard" name="Venta Rápida" parent="menu_cinenvista_root" 
+              action="action_ticket_wizard" sequence="50"/>
 </odoo>
