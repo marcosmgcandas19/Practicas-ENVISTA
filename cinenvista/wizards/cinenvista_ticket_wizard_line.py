@@ -93,3 +93,22 @@ class CinenvistaTicketWizardLine(models.TransientModel):
                 )
 
     
+    @api.constrains('quantity', 'product_id')
+    def _check_stock_sufficient(self):
+        """Valida que haya stock disponible"""
+        for line in self:
+            if line.product_id:
+                try:
+                    quant = self.env['stock.quant'].search([
+                        ('product_id', '=', line.product_id.id),
+                    ], limit=1)
+                    available = int(quant.available_quantity) if quant else 0
+                    
+                    if line.quantity > available:
+                        raise ValidationError(
+                            f'Stock insuficiente de {line.product_id.name}. '
+                            f'Disponible: {available}, Solicitado: {line.quantity}'
+                        )
+                except KeyError:
+                    # stock.quant no está disponible (módulo stock no instalado)
+                    pass

@@ -30,9 +30,9 @@ class CinenvistPromotion(models.Model):
         relation='cinenvista_promotion_product_rel',
         column1='promotion_id',
         column2='product_id',
-        domain=[('type', '=', 'service')],
+        domain=[('type', 'in', ['service', 'consu'])],
         string='Productos',
-        help='Productos (servicios) a los que se aplica esta promoción'
+        help='Productos (servicios y consumibles) a los que se aplica esta promoción'
     )
 
     promo_type = fields.Selection(
