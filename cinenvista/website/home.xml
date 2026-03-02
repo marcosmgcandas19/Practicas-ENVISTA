@@ -23,9 +23,9 @@
                                     <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; background: white;" onmouseover="this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)';">
                                         
                                         <!-- Movie Poster Image with Rounded Top Corners -->
-                                        <div style="height: 350px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px 12px 0 0;">
+                                        <div style="height: auto; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px 12px 0 0;">
                                             <t t-if="movie.image_url">
-                                                <img t-att-src="movie.image_url" alt="Poster" class="w-100 h-100" style="object-fit: cover;"/>
+                                                <img t-att-src="movie.image_url" alt="Poster" class="w-100" style="display: block; height: auto;"/>
                                             </t>
                                             <t t-else="">
                                                 <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white">
