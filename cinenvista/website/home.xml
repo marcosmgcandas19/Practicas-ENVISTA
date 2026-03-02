@@ -17,46 +17,56 @@
 
                         <!-- Movies Grid -->
                         <div class="row g-4 mb-5">
-                            <t t-foreach="movies" t-as="movie">
-                                <div class="col-lg-3 col-md-6 col-sm-12">
-                                    <!-- Movie Card -->
-                                    <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; background: white; position: relative;" onmouseover="this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)';">
-                                        
-                                        <!-- Movie Poster Image with Rounded Top Corners -->
-                                        <div style="height: auto; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px 12px 0 0; position: relative;">
-                                            <t t-if="movie.image_url">
-                                                <img t-att-src="movie.image_url" alt="Poster" class="w-100" style="display: block; height: auto;"/>
-                                            </t>
-                                            <t t-else="">
-                                                <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white">
-                                                    <span style="font-size: 64px;">🎬</span>
-                                                </div>
-                                            </t>
+                            <t t-if="movies">
+                                <t t-foreach="movies" t-as="movie">
+                                    <div class="col-lg-3 col-md-6 col-sm-12">
+                                        <!-- Movie Card -->
+                                        <div class="movie-card-container">
                                             
-                                            <!-- Rating Badge (Overlay Top-Right) -->
-                                            <div style="position: absolute; top: 12px; right: 12px; background: rgba(0, 0, 0, 0.85); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; backdrop-filter: blur(8px);">
-                                                <span style="font-size: 18px; color: #FFA500;">★</span>
-                                                <span style="font-weight: bold; color: white; font-size: 14px;" t-text="movie.rating"/>
-                                            </div>
-                                        </div>
-
-                                        <!-- Card Body -->
-                                        <div style="padding: 16px;">
-                                            <!-- Movie Title -->
-                                            <h5 style="font-weight: 700; font-size: 15px; margin-bottom: 12px; color: #2C3E50; line-height: 1.4; text-align: center;" t-text="movie.title"/>
-                                            
-                                            <!-- Tags Container -->
-                                            <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
-                                                <t t-if="movie.tag_ids">
-                                                    <t t-foreach="movie.tag_ids" t-as="tag">
-                                                        <!-- Soft Color Pill Tags -->
-                                                        <span style="background: #E8F4F8; color: #0097A7; padding: 5px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; border: 1px solid #B2EBF2;" t-text="tag.name"/>
-                                                    </t>
+                                            <!-- Movie Poster Image with Rounded Top Corners -->
+                                            <div class="movie-poster-container">
+                                                <t t-set="movie_image" t-value="movie.get('image_url') or movie.get('image_url')"/>
+                                                <t t-if="movie_image">
+                                                    <img t-att-src="movie_image" alt="Poster" class="movie-poster-image"/>
                                                 </t>
+                                                <t t-else="">
+                                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white">
+                                                        <span class="movie-poster-emoji">🎬</span>
+                                                    </div>
+                                                </t>
+                                                
+                                                <!-- Rating Badge (Overlay Top-Right) -->
+                                                <div class="movie-rating-badge">
+                                                    <span class="movie-rating-star">★</span>
+                                                    <span class="movie-rating-score">
+                                                        <t t-esc="movie.get('rating', 0)"/>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Card Body -->
+                                            <div class="movie-card-body">
+                                                <!-- Movie Title -->
+                                                <h5 class="movie-card-title">
+                                                    <t t-esc="movie.get('title', 'Sin título')"/>
+                                                </h5>
+                                                
+                                                <!-- Tags Container -->
+                                                <div class="movie-tags-container">
+                                                    <t t-set="tags" t-value="movie.get('tag_ids', [])"/>
+                                                    <t t-if="len(tags) > 0">
+                                                        <t t-foreach="tags" t-as="tag">
+                                                            <!-- Soft Color Pill Tags -->
+                                                            <span class="movie-tag-pill">
+                                                                <t t-esc="tag.get('name', '')"/>
+                                                            </span>
+                                                        </t>
+                                                    </t>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </t>
                             </t>
                         </div>
 
