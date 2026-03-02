@@ -132,4 +132,4 @@
 
     <menuitem id="menu_ticket_wizard" name="Venta Rápida" parent="menu_cinenvista_root" 
               action="action_ticket_wizard" sequence="50"/>
-</odoo>
+</odoo> 

@@ -107,6 +107,6 @@ class CinenvistPromotion(models.Model):
         """Limpia campos no aplicables cuando cambia el tipo de promoción"""
         if self.promo_type == 'fixed':
             self.date_start = None
-            self.date_end = None
+            self.date_end = None 
         elif self.promo_type == 'range':
             self.day_of_week = None
