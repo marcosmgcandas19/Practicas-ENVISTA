@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================================ -->
+        <!-- MAIN HOME TEMPLATE - Standalone with Header and Footer -->
+        <!-- ============================================================ -->
+        <template id="home_template" name="Cinenvista Home">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure">
+                    <div class="container mt-5 mb-5">
+                        <!-- Hero Section -->
+                        <div class="text-center py-5 mb-5">
+                            <h1 class="display-4 fw-bold mb-3">Bienvenido a Cinenvista</h1>
+                            <p class="lead text-muted mb-0">Descubre las mejores películas del cine, en cualquier momento y lugar</p>
+                            <hr class="w-50 mx-auto mt-4"/>
+                        </div>
+
+                        <!-- Movies Grid -->
+                        <div class="row g-4 mb-5">
+                            <t t-foreach="movies" t-as="movie">
+                                <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <!-- Movie Card -->
+                                    <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; background: white;" onmouseover="this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)';">
+                                        
+                                        <!-- Movie Poster Image with Rounded Top Corners -->
+                                        <div style="height: 350px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px 12px 0 0;">
+                                            <t t-if="movie.image_url">
+                                                <img t-att-src="movie.image_url" alt="Poster" class="w-100 h-100" style="object-fit: cover;"/>
+                                            </t>
+                                            <t t-else="">
+                                                <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white">
+                                                    <span style="font-size: 64px;">🎬</span>
+                                                </div>
+                                            </t>
+                                        </div>
+
+                                        <!-- Card Body -->
+                                        <div style="padding: 16px;">
+                                            <!-- Movie Title -->
+                                            <h5 style="font-weight: 700; font-size: 15px; margin-bottom: 12px; color: #2C3E50; line-height: 1.4; text-align: center;" t-text="movie.title"/>
+                                            
+                                            <!-- Tags Container -->
+                                            <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
+                                                <t t-if="movie.tag_ids">
+                                                    <t t-foreach="movie.tag_ids" t-as="tag">
+                                                        <!-- Soft Color Pill Tags -->
+                                                        <span style="background: #E8F4F8; color: #0097A7; padding: 5px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; border: 1px solid #B2EBF2;" t-text="tag.name"/>
+                                                    </t>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+
+                        <!-- Empty State -->
+                        <t t-if="not movies">
+                            <div class="row">
+                                <div class="col-12 text-center py-5">
+                                    <p class="text-muted fs-5">No hay películas disponibles en este momento.</p>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- ============================================================ -->
+        <!-- WEBSITE MENU ENTRY -->
+        <!-- ============================================================ -->
+        <record id="cinenvista_menu" model="website.menu">
+            <field name="name">Cinenvista</field>
+            <field name="url">/cine</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence">1</field>
+        </record>
+    </data>
+</odoo>

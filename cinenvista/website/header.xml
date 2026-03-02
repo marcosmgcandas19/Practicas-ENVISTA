@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================================ -->
+        <!-- CUSTOM HEADER - Override website.layout header -->
+        <!-- ============================================================ -->
+        <template id="cinenvista_custom_header" inherit_id="website.layout" name="Cinenvista Custom Header">
+            <!-- Override the header element -->
+            <xpath expr="//header" position="replace">
+                <header class="sticky-top" style="padding: 20px 0; background: transparent; z-index: 1030;">
+                    <div class="container-fluid px-4">
+                        <!-- Floating Navbar Container (Pill Style) -->
+                        <div style="background: white; border-radius: 50px; padding: 12px 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; max-width: 100%;">
+                            
+                            <!-- Left Section: Cartelera Button -->
+                            <div style="display: flex; gap: 16px;">
+                                <a href="#cartelera" class="btn btn-success btn-sm" style="border-radius: 25px; padding: 8px 20px; font-weight: 600; font-size: 14px; background: #2ECC71; border: none;">
+                                    Cartelera
+                                </a>
+                                <a href="#proximamente" class="btn btn-outline-secondary btn-sm" style="border-radius: 25px; padding: 8px 20px; font-weight: 600; font-size: 14px; border: 2px solid #ddd;">
+                                    Próximamente
+                                </a>
+                            </div>
+
+                            <!-- Center: Logo -->
+                            <a href="/cine" class="navbar-brand" style="margin: 0 auto; display: flex; align-items: center;">
+                                <img src="/cinenvista/static/src/images/logo.png" alt="Cinenvista Logo" style="height: 50px; width: auto;"/>
+                            </a>
+
+                            <!-- Right Section: User Avatar -->
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <a href="/web/login" class="d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; border-radius: 50%; overflow: hidden; text-decoration: none; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);">
+                                    <img src="/cinenvista/static/src/images/user.png" alt="User Profile" style="width: 100%; height: 100%; object-fit: cover;"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            </xpath>
+        </template>
+    </data>
+</odoo>

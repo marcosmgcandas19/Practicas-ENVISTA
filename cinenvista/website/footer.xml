@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================================ -->
+        <!-- CUSTOM FOOTER - Override website.layout footer -->
+        <!-- ============================================================ -->
+        <template id="cinenvista_custom_footer" inherit_id="website.layout" name="Cinenvista Custom Footer">
+            <!-- Override the footer element -->
+            <xpath expr="//footer" position="replace">
+                <footer class="py-5" style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); color: white;">
+                    <div class="container-fluid px-4">
+                        <div class="row">
+                            <!-- Left Column: Logo and Navigation -->
+                            <div class="col-md-6">
+                                <h5 class="mb-4" style="font-weight: bold; font-size: 18px;">
+                                 <img src="/cinenvista/static/src/images/logo.png" alt="Cinenvista Logo" style="height: 50px; width: auto;"/>
+                                </h5>
+                                <div style="display: flex; flex-direction: column; gap: 12px;">
+                                    <a href="#cartelera" class="text-decoration-none text-white" style="font-size: 14px; opacity: 0.9;">
+                                        Cartelera
+                                    </a>
+                                    <a href="#proximamente" class="text-decoration-none text-white" style="font-size: 14px; opacity: 0.9;">
+                                        Próximamente
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Right Column: Additional Links -->
+                            <div class="col-md-6 text-end">
+                                <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-end;">
+                                    <a href="#contacto" class="text-decoration-none text-white" style="font-size: 14px; opacity: 0.9;">
+                                        Contacto
+                                    </a>
+                                    <a href="#terminos" class="text-decoration-none text-white" style="font-size: 14px; opacity: 0.9;">
+                                        Términos y Condiciones
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Bottom -->
+                        <div style="border-top: 1px solid rgba(255,255,255,0.2); margin-top: 24px; padding-top: 16px; text-align: center;">
+                            <p class="mb-0" style="font-size: 12px; opacity: 0.7;">
+                                © 2026 Cinenvista. Todos los derechos reservados.
+                            </p>
+                        </div>
+                    </div>
+                </footer>
+            </xpath>
+        </template>
+    </data>
+</odoo>

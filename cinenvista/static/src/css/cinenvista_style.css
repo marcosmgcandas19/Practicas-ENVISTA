@@ -1,0 +1,518 @@
+/* ============================================================ */
+/* CINENVISTA - Corporate Styling */
+/* ============================================================ */
+
+/* ============================================================ */
+/* 1. CSS ROOT VARIABLES - Colores corporativos */
+/* ============================================================ */
+:root {
+    --cinenvista-green: #2ECC71;
+    --cinenvista-dark: #2C3E50;
+    --cinenvista-dark-bg: #1a237e;
+    --cinenvista-blue: #0d47a1;
+    --cinenvista-purple: #667eea;
+    --cinenvista-light-bg: #F8F9FA;
+    --cinenvista-border: #E9ECEF;
+    --cinenvista-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --cinenvista-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.2);
+    --orange-rating: #FFA500;
+    --tag-bg: #E8F4F8;
+    --tag-color: #0097A7;
+    --tag-border: #B2EBF2;
+}
+
+/* ============================================================ */
+/* 2. GLOBAL STYLES */
+/* ============================================================ */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--cinenvista-light-bg);
+    color: var(--cinenvista-dark);
+    line-height: 1.6;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+    color: inherit;
+}
+
+/* ============================================================ */
+/* 3. HEADER/NAVBAR STYLES */
+/* ============================================================ */
+header {
+    backdrop-filter: blur(10px);
+    animation: slideDown 0.5s ease-out;
+}
+
+header .navbar-brand {
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+header .btn-success {
+    background-color: var(--cinenvista-green) !important;
+    border-color: var(--cinenvista-green) !important;
+    border-radius: 25px !important;
+    padding: 8px 20px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease;
+}
+
+header .btn-success:hover {
+    background-color: #27ae60 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3) !important;
+}
+
+header .btn-outline-secondary {
+    border-radius: 25px !important;
+    border: 2px solid var(--cinenvista-border) !important;
+    padding: 8px 20px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    color: var(--cinenvista-dark) !important;
+    transition: all 0.3s ease;
+}
+
+header .btn-outline-secondary:hover {
+    background-color: var(--cinenvista-light-bg);
+    border-color: var(--cinenvista-green) !important;
+    color: var(--cinenvista-green) !important;
+}
+
+/* Floating navbar pill style */
+header div[style*="border-radius: 50px"] {
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* User Avatar */
+header a[style*="border-radius: 50%"] {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+}
+
+header a[style*="border-radius: 50%"]:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5) !important;
+}
+
+/* ============================================================ */
+/* 4. HERO SECTION STYLES */
+/* ============================================================ */
+.hero-section h1 {
+    color: var(--cinenvista-dark);
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+}
+
+.hero-section p {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 24px;
+}
+
+.hero-section hr {
+    border: 2px solid var(--cinenvista-green);
+    opacity: 0.8;
+}
+
+/* ============================================================ */
+/* 5. MOVIE CARDS STYLES */
+/* ============================================================ */
+
+/* Movie Card Container */
+.movie-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--cinenvista-shadow);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: white;
+}
+
+.movie-card:hover {
+    box-shadow: var(--cinenvista-shadow-hover);
+    transform: translateY(-5px);
+}
+
+/* Movie Poster */
+.movie-poster {
+    position: relative;
+    height: 350px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--cinenvista-purple) 0%, #764ba2 100%);
+}
+
+.movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover .movie-poster img {
+    transform: scale(1.05);
+}
+
+/* Rating Badge */
+.rating-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(8px);
+    animation: fadeInRight 0.5s ease-out;
+}
+
+.rating-badge span:first-child {
+    font-size: 18px;
+    color: var(--orange-rating);
+}
+
+.rating-badge span:last-child {
+    font-weight: bold;
+    color: white;
+    font-size: 16px;
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Movie Card Body */
+.movie-card-body {
+    padding: 20px;
+    background: white;
+}
+
+/* Movie Title */
+.movie-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 16px;
+    color: var(--cinenvista-dark);
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* Tags Container */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+/* Tag Pill Styles */
+.movie-tag {
+    background: var(--tag-bg);
+    color: var(--tag-color);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--tag-border);
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.movie-tag:hover {
+    background: var(--tag-color);
+    color: white;
+    border-color: var(--tag-color);
+    transform: translateY(-2px);
+}
+
+/* Rating Display at Bottom */
+.movie-rating-footer {
+    text-align: center;
+    padding-top: 12px;
+    border-top: 1px solid #F0F0F0;
+}
+
+.movie-rating-footer span:first-child {
+    color: var(--orange-rating);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.movie-rating-footer span:nth-child(2) {
+    color: var(--cinenvista-dark);
+    font-weight: 700;
+    margin-left: 6px;
+}
+
+.movie-rating-footer span:last-child {
+    color: #BDBDBD;
+    font-size: 14px;
+}
+
+/* ============================================================ */
+/* 6. EMPTY STATE STYLES */
+/* ============================================================ */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.empty-state p {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* ============================================================ */
+/* 7. FOOTER STYLES */
+/* ============================================================ */
+footer {
+    background: linear-gradient(135deg, var(--cinenvista-dark-bg) 0%, var(--cinenvista-blue) 100%);
+    color: white;
+    padding: 40px 0 20px 0;
+}
+
+footer h5 {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+footer a {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--cinenvista-green);
+    opacity: 1;
+    text-decoration: underline;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+footer li {
+    margin-bottom: 12px;
+}
+
+footer .footer-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 24px;
+    padding-top: 16px;
+}
+
+footer .footer-bottom {
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.7;
+    margin: 0;
+}
+
+/* ============================================================ */
+/* 8. RESPONSIVE DESIGN */
+/* ============================================================ */
+
+/* Large screens (lg) */
+@media (max-width: 1199px) {
+    .movie-poster {
+        height: 330px;
+    }
+}
+
+/* Medium screens (md) */
+@media (max-width: 767px) {
+    .movie-poster {
+        height: 300px;
+    }
+
+    .hero-section h1 {
+        font-size: 32px;
+    }
+
+    .hero-section p {
+        font-size: 16px;
+    }
+
+    header div[style*="border-radius: 50px"] {
+        padding: 10px 20px !important;
+    }
+
+    header a[style*="border-radius: 50%"] {
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
+
+/* Small screens (sm) */
+@media (max-width: 575px) {
+    .movie-poster {
+        height: 250px;
+    }
+
+    .hero-section h1 {
+        font-size: 24px;
+    }
+
+    .hero-section p {
+        font-size: 14px;
+    }
+
+    .hero-section hr {
+        width: 80% !important;
+    }
+
+    .movie-title {
+        font-size: 14px;
+    }
+
+    .tags-container {
+        gap: 6px;
+    }
+
+    .movie-tag {
+        font-size: 11px;
+        padding: 5px 12px;
+    }
+
+    footer .row {
+        text-align: center;
+    }
+
+    footer .col-md-6:last-child {
+        align-items: center;
+    }
+}
+
+/* ============================================================ */
+/* 9. ANIMATIONS */
+/* ============================================================ */
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Pulse Animation for Badges */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.rating-badge {
+    animation: fadeInRight 0.5s ease-out, pulse 2s ease-in-out infinite;
+}
+
+/* ============================================================ */
+/* 10. UTILITY CLASSES */
+/* ============================================================ */
+
+.text-cinenvista-green {
+    color: var(--cinenvista-green) !important;
+}
+
+.text-cinenvista-dark {
+    color: var(--cinenvista-dark) !important;
+}
+
+.bg-cinenvista-light {
+    background-color: var(--cinenvista-light-bg) !important;
+}
+
+.shadow-cinenvista {
+    box-shadow: var(--cinenvista-shadow) !important;
+}
+
+.shadow-cinenvista-hover {
+    box-shadow: var(--cinenvista-shadow-hover) !important;
+}
+
+/* ============================================================ */
+/* 11. SCROLLBAR STYLING */
+/* ============================================================ */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--cinenvista-light-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--cinenvista-green);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #27ae60;
+}
+
+/* ============================================================ */
+/* 12. TRANSITION UTILITIES */
+/* ============================================================ */
+
+* {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+button,
+a,
+.movie-card,
+.movie-tag {
+    transition-duration: 300ms;
+}

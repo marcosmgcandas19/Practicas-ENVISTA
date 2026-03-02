@@ -2,6 +2,7 @@
     # ============ INFORMACIÓN BÁSICA DEL MÓDULO ============
     'name': 'CinenVista',
     'version': '1.0',
+    'license': 'LGPL-3',
     'summary': 'Sistema completo de gestión integral para cines. Incluye películas, salas, sesiones, reservas y programa de fidelización.',
     'category': 'Services',
     'author': 'Marcos',
@@ -13,6 +14,7 @@
         'product',       # Para crear productos de entradas
         'sale',          # Para crear órdenes de venta
         'stock',         # Para gestionar stock de consumibles
+        'website',       # Para funcionalidad web pública
     ],
     
     # ============ ARCHIVOS DE DATOS Y VISTAS ============
@@ -43,10 +45,22 @@
         'views/cinenvista_seat.xml',                   # Butacas
         'views/cinenvista_promotion.xml',              # Promociones y campañas
         
-        # 6. Reportes y Wizards
+        # 6. Plantillas Web (QWeb para frontend)
+        'website/header.xml',                          # Header personalizado corporativo
+        'website/footer.xml',                          # Footer personalizado corporativo
+        'website/home.xml',                            # Página principal (Home) con grilla de películas
+        
+        # 7. Reportes y Wizards
         'reports/report_ticket_template.xml',          # Reporte PDF de tickets
         'wizards/cinenvista_ticket_wizard.xml',        # Asistente de venta rápida
     ],
+    
+    # ============ ARCHIVOS ESTÁTICOS (CSS, JS, Imágenes) ============
+    'assets': {
+        'web.assets_frontend': [
+            'cinenvista/static/src/css/cinenvista_style.css',  # Estilos personalizados
+        ],
+    },
     
     # ============ CONFIGURACIÓN DE INSTALACIÓN ============
     'installable': True,
