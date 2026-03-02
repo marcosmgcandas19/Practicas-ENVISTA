@@ -20,10 +20,10 @@
                             <t t-foreach="movies" t-as="movie">
                                 <div class="col-lg-3 col-md-6 col-sm-12">
                                     <!-- Movie Card -->
-                                    <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; background: white;" onmouseover="this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)';">
+                                    <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; background: white; position: relative;" onmouseover="this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)'; this.style.transform='translateY(-5px)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)';">
                                         
                                         <!-- Movie Poster Image with Rounded Top Corners -->
-                                        <div style="height: auto; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px 12px 0 0;">
+                                        <div style="height: auto; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px 12px 0 0; position: relative;">
                                             <t t-if="movie.image_url">
                                                 <img t-att-src="movie.image_url" alt="Poster" class="w-100" style="display: block; height: auto;"/>
                                             </t>
@@ -32,6 +32,12 @@
                                                     <span style="font-size: 64px;">🎬</span>
                                                 </div>
                                             </t>
+                                            
+                                            <!-- Rating Badge (Overlay Top-Right) -->
+                                            <div style="position: absolute; top: 12px; right: 12px; background: rgba(0, 0, 0, 0.85); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; backdrop-filter: blur(8px);">
+                                                <span style="font-size: 18px; color: #FFA500;">★</span>
+                                                <span style="font-weight: bold; color: white; font-size: 14px;" t-text="movie.rating"/>
+                                            </div>
                                         </div>
 
                                         <!-- Card Body -->
