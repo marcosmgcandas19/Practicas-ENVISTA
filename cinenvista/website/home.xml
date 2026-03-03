@@ -15,11 +15,18 @@
                             <hr class="w-50 mx-auto mt-4"/>
                         </div>
 
-                        <!-- Movies Grid -->
-                        <div class="row g-4 mb-5">
-                            <t t-if="movies">
-                                <t t-foreach="movies" t-as="movie">
-                                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <!-- Movies Grid with Horizontal Scroll -->
+                        <div class="movies-carousel-wrapper mb-5">
+                            <!-- Left Arrow -->
+                            <button class="carousel-arrow carousel-arrow-left" data-scroll="-1" title="Anterior">
+                                <span>&#8249;</span>
+                            </button>
+
+                            <!-- Movies Container -->
+                            <div class="movies-scroll-container">
+                                <t t-if="movies">
+                                    <t t-foreach="movies" t-as="movie">
+                                        <div class="movie-scroll-item">
                                         <!-- Movie Card -->
                                         <div class="movie-card-container">
                                             
@@ -56,8 +63,9 @@
                                                     <t t-set="tags" t-value="movie.get('tag_ids', [])"/>
                                                     <t t-if="len(tags) > 0">
                                                         <t t-foreach="tags" t-as="tag">
-                                                            <!-- Soft Color Pill Tags -->
-                                                            <span class="movie-tag-pill">
+                                                            <!-- Color Pill Tags with Dynamic Color -->
+                                                            <t t-set="tag_hex_color" t-value="tag.get('hex_color', '#BDBDBD')"/>
+                                                            <span class="movie-tag-pill" t-att-style="'background-color: ' + tag_hex_color + '; color: white;'">
                                                                 <t t-esc="tag.get('name', '')"/>
                                                             </span>
                                                         </t>
@@ -68,9 +76,13 @@
                                     </div>
                                 </t>
                             </t>
-                        </div>
+                            </div>
 
-                        <!-- Empty State -->
+                            <!-- Right Arrow -->
+                            <button class="carousel-arrow carousel-arrow-right" data-scroll="1" title="Siguiente">
+                                <span>&#8250;</span>
+                            </button>
+                        </div>
                         <t t-if="not movies">
                             <div class="row">
                                 <div class="col-12 text-center py-5">
@@ -81,6 +93,15 @@
                     </div>
                 </div>
             </t>
+        </template>
+
+        <!-- ============================================================ -->
+        <!-- Movie Carousel Script -->
+        <!-- ============================================================ -->
+        <template id="movie_carousel_script" inherit_id="website.layout" name="Movie Carousel Script">
+            <xpath expr="//body" position="inside">
+                <script src="/cinenvista/static/src/js/movie_carousel.js"></script>
+            </xpath>
         </template>
 
         <!-- ============================================================ -->

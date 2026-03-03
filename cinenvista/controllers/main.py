@@ -2,8 +2,58 @@
 from odoo import http
 from odoo.http import request
 import logging
+import csv
+import os
 
 _logger = logging.getLogger(__name__)
+
+
+def get_color_mapping():
+    """
+    Lee el archivo CSV de etiquetas de películas y crea un mapeo de color numérico a hexadecimal.
+    Valores estándar para colores 1-11 de Odoo.
+    """
+    color_mapping = {
+        1: '#EF5350',      # Rojo
+        2: '#FB8C00',      # Naranja
+        3: '#FDD835',      # Amarillo
+        4: '#42A5F5',      # Azul Claro
+        5: '#AB47BC',      # Púrpura
+        6: '#EC407A',      # Rosa
+        7: '#8D6E63',      # Marrón
+        8: '#BDBDBD',      # Gris
+        9: '#00897B',      # Verde Azulado
+        10: '#2ECC71',     # Verde
+        11: '#3F51B5',     # Índigo
+    }
+    
+    # Ruta del archivo CSV
+    csv_path = os.path.join(
+        os.path.dirname(__file__),
+        '..',
+        'data',
+        'cinenvista.movie.tag.csv'
+    )
+    
+    # Intentar leer colores únicos del CSV
+    try:
+        if os.path.exists(csv_path):
+            with open(csv_path, 'r', encoding='utf-8') as csvfile:
+                reader = csv.DictReader(csvfile)
+                unique_colors = set()
+                for row in reader:
+                    try:
+                        color_num = int(row.get('color', 0))
+                        if color_num > 0:
+                            unique_colors.add(color_num)
+                    except (ValueError, TypeError):
+                        pass
+                
+                _logger.info(f"[CINENVISTA] Colores únicos encontrados en CSV: {sorted(unique_colors)}")
+    except Exception as e:
+        _logger.warning(f"[CINENVISTA] No se pudo leer CSV de colores: {str(e)}")
+    
+    return color_mapping
 
 
 class CinenvistaCineController(http.Controller):
@@ -17,6 +67,9 @@ class CinenvistaCineController(http.Controller):
         _logger.info("=" * 80)
         _logger.info("[CINENVISTA] ✓ RUTA /cine ACCEDIDA")
         _logger.info("=" * 80)
+        
+        # Obtener mapeo de colores desde el CSV
+        color_map = get_color_mapping()
         
         # Obtener todas las películas
         movies_orm = request.env['cinenvista.movie'].sudo().search([])
@@ -35,12 +88,16 @@ class CinenvistaCineController(http.Controller):
             # Extraer etiquetas
             tags_list = []
             for tag_idx, tag in enumerate(movie.tag_ids, 1):
+                # Obtener color hexadecimal del mapeo (leído dinámicamente del CSV)
+                hex_color = color_map.get(tag.color, '#BDBDBD')  # Gris por defecto
                 tag_dict = {
                     'id': tag.id,
                     'name': tag.name,
+                    'color': tag.color,
+                    'hex_color': hex_color,
                 }
                 tags_list.append(tag_dict)
-                _logger.info(f"    TAG {tag_idx}: {tag.name}")
+                _logger.info(f"    TAG {tag_idx}: {tag.name} (Color: {tag.color} → {hex_color})")
             
             # Crear diccionario de película
             movie_dict = {

@@ -529,6 +529,9 @@ a,
     cursor: pointer;
     background: white;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .movie-card-container:hover {
@@ -538,18 +541,23 @@ a,
 
 /* Movie Poster Container */
 .movie-poster-container {
-    height: auto;
+    height: 420px;
+    width: 100%;
     overflow: hidden;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 12px 12px 0 0;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Movie Poster Image */
 .movie-poster-image {
     display: block;
-    height: auto;
+    height: 100%;
     width: 100%;
+    object-fit: cover;
 }
 
 /* Movie Poster Emoji Fallback */
@@ -587,6 +595,9 @@ a,
 /* Movie Card Body */
 .movie-card-body {
     padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Movie Card Title */
@@ -609,14 +620,89 @@ a,
 
 /* Movie Tag Pill */
 .movie-tag-pill {
-    background: #E8F4F8;
-    color: #0097A7;
     padding: 5px 12px;
     border-radius: 16px;
     font-size: 11px;
     font-weight: 600;
-    border: 1px solid #B2EBF2;
     display: inline-block;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.movie-tag-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Movies Scroll Container */
+.movies-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 12px 0;
+    scroll-behavior: smooth;
+    /* Hide scrollbar */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.movies-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Movies Carousel Wrapper */
+.movies-carousel-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+/* Carousel Arrow Button */
+.carousel-arrow {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid #2ECC71;
+    background: white;
+    color: #2ECC71;
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.carousel-arrow:hover {
+    background: #2ECC71;
+    color: white;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+    transform: scale(1.1);
+}
+
+.carousel-arrow:active {
+    transform: scale(0.95);
+}
+
+/* Carousel Arrow Left */
+.carousel-arrow-left {
+    order: -1;
+}
+
+/* Carousel Arrow Right */
+.carousel-arrow-right {
+    order: 3;
+}
+
+/* Movie Scroll Item */
+.movie-scroll-item {
+    flex: 0 0 auto;
+    width: 300px;
+    min-width: 300px;
 }
 
 /* ============================================================ */
@@ -640,12 +726,14 @@ a,
     align-items: center;
     justify-content: space-between;
     max-width: 100%;
+    position: relative;
 }
 
 /* Navbar Left Section */
 .navbar-left {
     display: flex;
     gap: 16px;
+    flex-grow: 1;
 }
 
 /* Navbar Button Success */
@@ -673,9 +761,11 @@ a,
 
 /* Navbar Center Logo */
 .navbar-center {
-    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    align-items: center;
+    justify-content: center;
 }
 
 /* Navbar Logo */
@@ -689,6 +779,8 @@ a,
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-grow: 1;
+    justify-content: flex-end;
 }
 
 /* User Avatar */
