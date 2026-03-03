@@ -143,10 +143,10 @@ header a[style*="border-radius: 50%"]:hover {
 .movie-card {
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--cinenvista-shadow);
+    
     transition: all 0.3s ease;
     cursor: pointer;
-    background: white;
+    
 }
 
 .movie-card:hover {
@@ -159,7 +159,7 @@ header a[style*="border-radius: 50%"]:hover {
     position: relative;
     height: 350px;
     overflow: hidden;
-    background: linear-gradient(135deg, var(--cinenvista-purple) 0%, #764ba2 100%);
+    
 }
 
 .movie-poster img {
@@ -213,7 +213,7 @@ header a[style*="border-radius: 50%"]:hover {
 /* Movie Card Body */
 .movie-card-body {
     padding: 20px;
-    background: white;
+    
 }
 
 /* Movie Title */
@@ -524,18 +524,16 @@ a,
 .movie-card-container {
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     cursor: pointer;
-    background: white;
     position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
+    background: var(--cinenvista-light-bg);
 }
 
 .movie-card-container:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     transform: translateY(-5px);
 }
 
@@ -544,8 +542,8 @@ a,
     height: 420px;
     width: 100%;
     overflow: hidden;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px 12px 0 0;
+    
+    border-radius: 25px;
     position: relative;
     display: flex;
     align-items: center;
@@ -620,18 +618,12 @@ a,
 
 /* Movie Tag Pill */
 .movie-tag-pill {
-    padding: 5px 12px;
-    border-radius: 16px;
+    padding: 4px 8px;
+    border-radius: 12px;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 500;
     display: inline-block;
-    transition: all 0.2s ease;
     border: none;
-}
-
-.movie-tag-pill:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Movies Scroll Container */
@@ -665,8 +657,8 @@ a,
     height: 44px;
     border-radius: 50%;
     border: 2px solid #2ECC71;
-    background: white;
-    color: #2ECC71;
+    background: #2ECC71;
+    color: white;
     font-size: 28px;
     cursor: pointer;
     display: flex;
@@ -678,8 +670,8 @@ a,
 }
 
 .carousel-arrow:hover {
-    background: #2ECC71;
-    color: white;
+    background: white;
+    color: #2ECC71;
     box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
     transform: scale(1.1);
 }
