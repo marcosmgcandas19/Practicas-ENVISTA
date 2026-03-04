@@ -49,6 +49,7 @@
         'website/header.xml',                          # Header personalizado corporativo
         'website/footer.xml',                          # Footer personalizado corporativo
         'website/home.xml',                            # Página principal (Home) con grilla de películas
+        'website/movie.xml',                           # Página de detalle de película
         
         # 7. Reportes y Wizards
         'reports/report_ticket_template.xml',          # Reporte PDF de tickets
@@ -58,7 +59,13 @@
     # ============ ARCHIVOS ESTÁTICOS (CSS, JS, Imágenes) ============
     'assets': {
         'web.assets_frontend': [
-            'cinenvista/static/src/css/cinenvista_style.css',  # Estilos personalizados
+            # Variables y estilos globales
+            'cinenvista/static/src/css/cinenvista_variables.css',
+            # Componentes específicos
+            'cinenvista/static/src/css/cinenvista_header.css',
+            'cinenvista/static/src/css/cinenvista_footer.css',
+            'cinenvista/static/src/css/cinenvista_home.css',
+            'cinenvista/static/src/css/cinenvista_movie.css',
         ],
     },
     

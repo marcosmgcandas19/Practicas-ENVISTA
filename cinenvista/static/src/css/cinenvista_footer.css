@@ -1,0 +1,153 @@
+/* ============================================================ */
+/* CINENVISTA - FOOTER STYLES */
+/* ============================================================ */
+
+/* ============================================================ */
+/* 7. FOOTER STYLES - LEGACY */
+/* ============================================================ */
+footer {
+    background: linear-gradient(135deg, var(--cinenvista-dark-bg) 0%, var(--cinenvista-blue) 100%);
+    color: white;
+    padding: 40px 0 20px 0;
+}
+
+footer h5 {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+footer a {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--cinenvista-green);
+    opacity: 1;
+    text-decoration: underline;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+footer li {
+    margin-bottom: 12px;
+}
+
+footer .footer-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 24px;
+    padding-top: 16px;
+}
+
+footer .footer-bottom {
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.7;
+    margin: 0;
+}
+
+/* ============================================================ */
+/* 15. FOOTER STYLES - CUSTOM COMPONENTS */
+/* ============================================================ */
+
+/* Cinenvista Footer */
+.cinenvista-footer {
+    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+    color: white;
+    padding: 40px 15px 20px 15px;
+}
+
+/* Footer Column */
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Footer Column Heading */
+.footer-column h5 {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+
+/* Footer Logo */
+.footer-logo {
+    height: 50px;
+    width: auto;
+}
+
+/* Footer Link */
+.footer-link {
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.footer-link:hover {
+    opacity: 1;
+    color: var(--cinenvista-green);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 24px;
+    padding-top: 16px;
+    text-align: center;
+}
+
+/* Footer Copyright Text */
+.footer-copyright {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* ============================================================ */
+/* FOOTER RESPONSIVE */
+/* ============================================================ */
+
+@media (max-width: 767px) {
+    .cinenvista-footer {
+        padding: 30px 15px 15px 15px;
+    }
+
+    .footer-row {
+        text-align: center;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0 15px;
+    }
+
+    .footer-column {
+        align-items: center;
+    }
+
+    .footer-logo {
+        height: 40px;
+    }
+
+    .footer-link {
+        font-size: 13px;
+    }
+
+    .footer-bottom {
+        margin-top: 16px;
+        padding-top: 12px;
+    }
+
+    .footer-copyright {
+        font-size: 11px;
+    }
+}

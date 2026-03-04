@@ -27,6 +27,8 @@
                                 <t t-if="movies">
                                     <t t-foreach="movies" t-as="movie">
                                         <div class="movie-scroll-item">
+                                        <!-- Movie Card Link -->
+                                        <a t-att-href="'/cine/pelicula/' + str(movie.get('id'))" class="movie-card-link" style="text-decoration: none;">
                                         <!-- Movie Card -->
                                         <div class="movie-card-container">
                                             
@@ -73,6 +75,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        </a>
                                     </div>
                                 </t>
                             </t>

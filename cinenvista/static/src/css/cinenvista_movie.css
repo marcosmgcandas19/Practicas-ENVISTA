@@ -1,0 +1,369 @@
+/* ============================================================ */
+/* CINENVISTA - MOVIE DETAIL PAGE STYLES */
+/* ============================================================ */
+
+/* ============================================================ */
+/* MOVIE DETAIL PAGE CONTAINER */
+/* ============================================================ */
+
+.cinenvista-movie-detail {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* ============================================================ */
+/* MOVIE DETAIL - POSTER SECTION */
+/* ============================================================ */
+
+.movie-poster-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.movie-poster {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.movie-poster:hover {
+    transform: scale(1.02);
+}
+
+/* ============================================================ */
+/* MOVIE DETAIL - HEADER SECTION */
+/* ============================================================ */
+
+.movie-header {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.movie-title {
+    color: #1a1a1a;
+    line-height: 1.2;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+/* ============================================================ */
+/* MOVIE DETAIL - SYNOPSIS SECTION */
+/* ============================================================ */
+
+.synopsis-section {
+    padding: 20px 0;
+}
+
+.section-label {
+    color: #1a1a1a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.synopsis-text {
+    color: #555;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-top: 10px;
+}
+
+/* ============================================================ */
+/* MOVIE DETAIL - SCREENINGS SECTION */
+/* ============================================================ */
+
+.screenings-section {
+    margin-top: 30px;
+}
+
+.screenings-header {
+    background-color: #e8e8e8 !important;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+}
+
+.screenings-header .section-label {
+    margin: 0;
+    color: #1a1a1a;
+}
+
+.screenings-header .badge {
+    background-color: #2ecc71 !important;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ============================================================ */
+/* MOVIE DETAIL - SCREENINGS LIST & CARDS */
+/* ============================================================ */
+
+.screenings-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.screening-card {
+    background-color: #2ecc71 !important;
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 130px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.screening-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(46, 204, 113, 0.25);
+}
+
+.screening-time {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.screening-room {
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+/* ============================================================ */
+/* MOVIE DETAIL - METADATA SIDEBAR */
+/* ============================================================ */
+
+.movie-metadata {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.metadata-section {
+    border-bottom: 1px solid #e8e8e8;
+    padding-bottom: 18px;
+    margin-bottom: 18px;
+}
+
+.metadata-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.metadata-label {
+    color: #1a1a1a;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    margin-bottom: 10px !important;
+}
+
+/* ============================================================ */
+/* MOVIE DETAIL - GENRES/TAGS */
+/* ============================================================ */
+
+.genres-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.genres-list .badge {
+    background-color: #f0ad4e !important;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    font-weight: 500;
+    border-radius: 20px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.genres-list .badge:hover {
+    background-color: #ec971f !important;
+    transform: translateY(-2px);
+}
+
+/* ============================================================ */
+/* MOVIE DETAIL - METADATA VALUES */
+/* ============================================================ */
+
+.metadata-section p {
+    color: #333;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.metadata-section strong {
+    color: #1a1a1a;
+    font-weight: 600;
+    display: inline;
+}
+
+/* ============================================================ */
+/* MOVIE DETAIL RESPONSIVE */
+/* ============================================================ */
+
+@media (max-width: 1199px) {
+    .movie-poster {
+        max-width: 100%;
+    }
+
+    .movie-title {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .movie-poster {
+        max-width: 400px;
+    }
+
+    .movie-title {
+        font-size: 2rem;
+    }
+
+    .section-label {
+        font-size: 1.05rem;
+    }
+
+    .synopsis-text {
+        font-size: 0.9rem;
+    }
+
+    .screening-card {
+        min-width: 110px;
+    }
+
+    .screening-time {
+        font-size: 1.2rem;
+    }
+
+    .movie-metadata {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cinenvista-movie-detail {
+        padding-top: 20px !important;
+        padding-bottom: 20px !important;
+    }
+
+    .movie-title {
+        font-size: 1.75rem;
+    }
+
+    .section-label {
+        font-size: 1rem;
+    }
+
+    .synopsis-text {
+        font-size: 0.9rem;
+    }
+
+    .screening-card {
+        flex: 1;
+        min-width: 100px;
+    }
+
+    .screening-time {
+        font-size: 1.1rem;
+    }
+
+    .screening-room {
+        font-size: 0.8rem;
+    }
+
+    .movie-metadata {
+        padding: 16px;
+        margin-top: 20px;
+    }
+
+    .metadata-section {
+        padding-bottom: 14px;
+        margin-bottom: 14px;
+    }
+
+    .genres-list .badge {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 575px) {
+    .cinenvista-movie-detail {
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+    }
+
+    .movie-title {
+        font-size: 1.5rem;
+    }
+
+    .section-label {
+        font-size: 0.95rem;
+    }
+
+    .synopsis-text {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    .screenings-header {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .screenings-list {
+        gap: 10px;
+    }
+
+    .screening-card {
+        min-width: 85px;
+        padding: 15px;
+    }
+
+    .screening-time {
+        font-size: 1rem;
+    }
+
+    .screening-room {
+        font-size: 0.75rem;
+    }
+
+    .movie-metadata {
+        padding: 14px;
+    }
+
+    .metadata-label {
+        font-size: 0.9rem;
+    }
+
+    .metadata-section p {
+        font-size: 0.9rem;
+    }
+
+    .genres-list .badge {
+        font-size: 0.75rem;
+        padding: 5px 8px;
+    }
+}

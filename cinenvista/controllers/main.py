@@ -58,6 +58,115 @@ def get_color_mapping():
 
 class CinenvistaCineController(http.Controller):
     
+    # ============ MÉTODOS PRIVADOS REUTILIZABLES ============
+    
+    def _get_tags_with_colors(self, tags, color_map):
+        """
+        Convierte una colección de tags con sus colores hexadecimales.
+        
+        Args:
+            tags: Colección ORM de tags
+            color_map (dict): Mapeo de color numérico a hexadecimal
+            
+        Returns:
+            list: Lista de diccionarios de tags con colores
+        """
+        tags_list = []
+        for tag_idx, tag in enumerate(tags, 1):
+            hex_color = color_map.get(tag.color, '#BDBDBD')
+            tag_dict = {
+                'id': tag.id,
+                'name': tag.name,
+                'color': tag.color,
+                'hex_color': hex_color,
+            }
+            tags_list.append(tag_dict)
+            _logger.info(f"    TAG {tag_idx}: {tag.name} (Color: {tag.color} → {hex_color})")
+        return tags_list
+    
+    def _convert_movie_to_dict(self, movie, include_colors=False):
+        """
+        Convierte un objeto ORM de película a diccionario.
+        
+        Args:
+            movie: Objeto ORM cinenvista.movie
+            include_colors (bool): Si True, incluye tags con colores hexadecimales
+            
+        Returns:
+            dict: Película en formato diccionario
+        """
+        movie_dict = {
+            'id': movie.id,
+            'title': movie.title or 'Sin título',
+            'description': movie.description or '',
+            'rating': movie.rating or 0.0,
+            'image_url': movie.image_url or '',
+            'release_date': movie.release_date,
+            'duration': movie.duration,
+            'state': movie.state or 'draft',
+        }
+        
+        # Procesar tags
+        if include_colors:
+            color_map = get_color_mapping()
+            tags_list = self._get_tags_with_colors(movie.tag_ids, color_map)
+            movie_dict['tag_ids'] = tags_list
+            movie_dict['tag_count'] = len(tags_list)
+        else:
+            movie_dict['tag_ids'] = [{'id': tag.id, 'name': tag.name} for tag in movie.tag_ids]
+        
+        return movie_dict
+    
+    def _convert_screening_to_dict(self, screening):
+        """
+        Convierte un objeto ORM de sesión/screening a diccionario.
+        
+        Args:
+            screening: Objeto ORM cinenvista.screening
+            
+        Returns:
+            dict: Sesión en formato diccionario
+        """
+        return {
+            'id': screening.id,
+            'start_time': screening.start_time,
+            'room_id': screening.room_id.id,
+            'room_name': screening.room_id.name,
+            'available_seats': screening.available_seats,
+        }
+    
+    def _get_screenings_today(self, movie_id):
+        """
+        Obtiene todas las sesiones de una película programadas para hoy.
+        
+        Args:
+            movie_id (int): ID de la película
+            
+        Returns:
+            list: Lista de diccionarios de sesiones ordenadas por hora
+        """
+        from datetime import date
+        today = date.today()
+        
+        screenings_orm = request.env['cinenvista.screening'].sudo().search([
+            ('movie_id', '=', movie_id),
+            ('start_time', '>=', f'{today} 00:00:00'),
+            ('start_time', '<', f'{today} 23:59:59'),
+            ('is_future', '=', True),
+        ], order='start_time asc')
+        
+        _logger.info(f"[CINENVISTA] Sesiones encontradas para hoy: {len(screenings_orm)}")
+        
+        screenings_data = []
+        for screening in screenings_orm:
+            screening_dict = self._convert_screening_to_dict(screening)
+            screenings_data.append(screening_dict)
+            _logger.info(f"  - Sesión {screening.id}: {screening.start_time} en {screening.room_id.name}")
+        
+        return screenings_data
+    
+    # ============ RUTAS PÚBLICAS ============
+    
     @http.route('/cine', auth='public', website=True)
     def home(self, **kw):
         """
@@ -67,9 +176,6 @@ class CinenvistaCineController(http.Controller):
         _logger.info("=" * 80)
         _logger.info("[CINENVISTA] ✓ RUTA /cine ACCEDIDA")
         _logger.info("=" * 80)
-        
-        # Obtener mapeo de colores desde el CSV
-        color_map = get_color_mapping()
         
         # Obtener todas las películas
         movies_orm = request.env['cinenvista.movie'].sudo().search([])
@@ -85,31 +191,7 @@ class CinenvistaCineController(http.Controller):
             _logger.info(f"  IMAGE_URL: '{movie.image_url}'")
             _logger.info(f"  TAG_IDS COUNT: {len(movie.tag_ids)}")
             
-            # Extraer etiquetas
-            tags_list = []
-            for tag_idx, tag in enumerate(movie.tag_ids, 1):
-                # Obtener color hexadecimal del mapeo (leído dinámicamente del CSV)
-                hex_color = color_map.get(tag.color, '#BDBDBD')  # Gris por defecto
-                tag_dict = {
-                    'id': tag.id,
-                    'name': tag.name,
-                    'color': tag.color,
-                    'hex_color': hex_color,
-                }
-                tags_list.append(tag_dict)
-                _logger.info(f"    TAG {tag_idx}: {tag.name} (Color: {tag.color} → {hex_color})")
-            
-            # Crear diccionario de película
-            movie_dict = {
-                'id': movie.id,
-                'title': movie.title or 'Sin título',
-                'description': movie.description or '',
-                'rating': movie.rating or 0.0,
-                'image_url': movie.image_url or '',
-                'state': movie.state or 'draft',
-                'tag_ids': tags_list,
-                'tag_count': len(tags_list),
-            }
+            movie_dict = self._convert_movie_to_dict(movie, include_colors=True)
             movies_data.append(movie_dict)
             _logger.info(f"  ✓ Película {idx} convertida correctamente")
         
@@ -133,6 +215,37 @@ class CinenvistaCineController(http.Controller):
             _logger.info(f"  - Primera película 'tag_ids': {first['tag_ids']}")
         
         _logger.info(f"[CINENVISTA] ✓ Renderizando template: cinenvista.home_template")
-        _logger.info("=" * 80 + "\n")
         
         return request.render('cinenvista.home_template', values)
+
+
+    @http.route('/cine/pelicula/<model("cinenvista.movie"):movie>', auth='public', website=True)
+    def movie_detail(self, movie, **kw):
+        """
+        Controlador de Detalle de Película.
+        Ruta: /cine/pelicula/<id_película> (Página de detalles de película individual)
+        
+        Recibe un objeto de película y obtiene las sesiones programadas para hoy.
+        """
+        _logger.info("=" * 80)
+        _logger.info(f"[CINENVISTA] ✓ RUTA /cine/pelicula/<movie> ACCEDIDA")
+        _logger.info(f"[CINENVISTA] Película solicitada: {movie.title} (ID: {movie.id})")
+        _logger.info("=" * 80)
+        
+        # Convertir película y obtener sesiones
+        movie_dict = self._convert_movie_to_dict(movie, include_colors=False)
+        screenings_data = self._get_screenings_today(movie.id)
+        
+        # Preparar valores para renderizar
+        values = {
+            'movie': movie_dict,
+            'screenings': screenings_data,
+            'total_screenings': len(screenings_data),
+        }
+        
+        _logger.info(f"[CINENVISTA] Estructura de datos:")
+        _logger.info(f"  - Película: {movie_dict['title']}")
+        _logger.info(f"  - Sesiones de hoy: {len(screenings_data)}")
+        _logger.info(f"[CINENVISTA] ✓ Renderizando template: cinenvista.movie_template")
+        
+        return request.render('cinenvista.movie_template', values)

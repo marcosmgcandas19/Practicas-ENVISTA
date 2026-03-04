@@ -1,0 +1,158 @@
+/* ============================================================ */
+/* CINENVISTA - CSS VARIABLES & GLOBAL STYLES */
+/* ============================================================ */
+
+/* ============================================================ */
+/* 1. CSS ROOT VARIABLES - Colores corporativos */
+/* ============================================================ */
+:root {
+    --cinenvista-green: #2ECC71;
+    --cinenvista-dark: #2C3E50;
+    --cinenvista-dark-bg: #1a237e;
+    --cinenvista-blue: #0d47a1;
+    --cinenvista-purple: #667eea;
+    --cinenvista-light-bg: #F8F9FA;
+    --cinenvista-border: #E9ECEF;
+    --cinenvista-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --cinenvista-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.2);
+    --orange-rating: #FFA500;
+    --tag-bg: #E8F4F8;
+    --tag-color: #0097A7;
+    --tag-border: #B2EBF2;
+}
+
+/* ============================================================ */
+/* 2. GLOBAL STYLES */
+/* ============================================================ */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--cinenvista-light-bg);
+    color: var(--cinenvista-dark);
+    line-height: 1.6;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+    color: inherit;
+}
+
+/* ============================================================ */
+/* 9. ANIMATIONS */
+/* ============================================================ */
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Fade In Right Animation */
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slide Down Animation */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Pulse Animation for Badges */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* ============================================================ */
+/* 10. UTILITY CLASSES */
+/* ============================================================ */
+
+.text-cinenvista-green {
+    color: var(--cinenvista-green) !important;
+}
+
+.text-cinenvista-dark {
+    color: var(--cinenvista-dark) !important;
+}
+
+.bg-cinenvista-light {
+    background-color: var(--cinenvista-light-bg) !important;
+}
+
+.shadow-cinenvista {
+    box-shadow: var(--cinenvista-shadow) !important;
+}
+
+.shadow-cinenvista-hover {
+    box-shadow: var(--cinenvista-shadow-hover) !important;
+}
+
+/* ============================================================ */
+/* 11. SCROLLBAR STYLING */
+/* ============================================================ */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--cinenvista-light-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--cinenvista-green);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #27ae60;
+}
+
+/* ============================================================ */
+/* 12. TRANSITION UTILITIES */
+/* ============================================================ */
+
+* {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+button,
+a,
+.movie-card,
+.movie-tag {
+    transition-duration: 300ms;
+}

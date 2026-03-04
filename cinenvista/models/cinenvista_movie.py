@@ -58,6 +58,15 @@ class CinenvistaMovie(models.Model):
         help='ID único de la película en The Movie Database'
     )
 
+    release_date = fields.Date(
+        string='Fecha de Estreno',
+        help='Fecha de estreno de la película'
+    )
+    duration = fields.Float(
+        string='Duración',
+        help='Duración de la película en minutos'
+    )
+
     # ============ CONFIGURACIÓN DE BÚSQUEDA TMDB ============
     # Constantes de la API (considerar llevarlas a settings en producción)
     TMDB_API_KEY = '70cb72743febfe5e2748a5e323bee131'
@@ -118,6 +127,16 @@ class CinenvistaMovie(models.Model):
         self.description = movie_data.get('overview', '')
         self.rating = float(movie_data.get('vote_average', 0.0))
         self.tmdb_id = str(movie_data.get('id', ''))
+        
+        # Mapear fecha de estreno
+        release_date_str = movie_data.get('release_date')
+        if release_date_str:
+            self.release_date = release_date_str
+        
+        # Mapear duración
+        duration_value = movie_data.get('runtime')
+        if duration_value:
+            self.duration = float(duration_value)
 
         # Construir URL completa de la imagen
         poster_path = movie_data.get('poster_path')
