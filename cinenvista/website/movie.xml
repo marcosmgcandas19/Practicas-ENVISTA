@@ -1,48 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- ============================================================ -->
-        <!-- MOVIE DETAIL PAGE TEMPLATE -->
-        <!-- ============================================================ -->
         <template id="movie_template" name="Cinenvista Movie Detail">
             <t t-call="website.layout">
                 <t t-set="additional_title">
                     <t t-esc="movie.get('title', 'Película')"/> - Cinenvista
                 </t>
-                
-                <!-- Main Content Container -->
+
                 <div class="container-fluid px-4 py-5 cinenvista-movie-detail">
-                    
-                    <!-- Movie Content: Three Column Layout -->
                     <div class="row g-4">
-                        
-                        <!-- ========== COLUMN 1: MOVIE POSTER ========== -->
                         <div class="col-lg-3 col-md-12">
                             <div class="movie-poster-container">
                                 <img t-att-src="movie.get('image_url', '')" 
-                                     t-att-alt="movie.get('title', 'Película')"
+                                     t-att-alt="movie.get('title', 'Película')" 
                                      class="movie-poster img-fluid rounded-lg"/>
                             </div>
                         </div>
-                        
-                        <!-- ========== COLUMN 2: INFORMATION & SCREENINGS ========== -->
+
                         <div class="col-lg-5 col-md-12">
-                            <!-- Movie Title -->
                             <div class="movie-header mb-4">
                                 <h1 class="movie-title display-5 fw-bold">
                                     <t t-esc="movie.get('title', 'Sin título')"/>
                                 </h1>
                             </div>
-                            
-                            <!-- Synopsis Section -->
+
                             <div class="synopsis-section mb-4">
                                 <h3 class="section-label fw-bold mb-3">Sinópsis</h3>
                                 <p class="synopsis-text">
                                     <t t-esc="movie.get('description', '')"/>
                                 </p>
                             </div>
-                            
-                            <!-- Screenings Section -->
+
                             <div class="screenings-section">
                                 <div class="screenings-header bg-light rounded-lg p-3 mb-3">
                                     <div class="d-flex align-items-center gap-2">
@@ -50,14 +38,10 @@
                                         <span class="badge bg-success">Hoy</span>
                                     </div>
                                 </div>
-                                
-                                <!-- Screenings List -->
                                 <div class="screenings-list d-flex flex-wrap gap-3">
                                     <t t-if="screenings">
                                         <t t-foreach="screenings" t-as="screening">
-                                            <!-- Screening Card -->
-                                            <div class="screening-card bg-success text-white rounded-lg p-3 d-flex flex-column justify-content-center align-items-center"
-                                                 style="min-width: 120px; text-align: center;">
+                                            <div class="screening-card bg-success text-white rounded-lg p-3 d-flex flex-column align-items-center" style="min-width: 120px;">
                                                 <div class="screening-time fw-bold" style="font-size: 1.25rem;">
                                                     <t t-esc="screening.get('start_time').strftime('%H:%M') if screening.get('start_time') else 'N/A'"/>
                                                 </div>
@@ -73,69 +57,54 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- ========== COLUMN 3: METADATA ========== -->
+
                         <div class="col-lg-4 col-md-12">
                             <div class="movie-metadata">
-                                
-                                <!-- Genres Section -->
                                 <div class="metadata-section mb-4">
                                     <h4 class="metadata-label fw-bold mb-2">Géneros</h4>
                                     <div class="genres-list d-flex flex-wrap gap-2">
                                         <t t-if="movie.get('tag_ids')">
-                                            <t t-foreach="movie.get('tag_ids', [])" t-as="tag">
-                                                <span class="badge bg-secondary rounded-pill">
-                                                    <t t-esc="tag.get('name', '')"/>
+                                            <t t-foreach="movie.get('tag_ids')" t-as="tag">
+                                                <span class="badge rounded-pill" t-attf-style="background-color: {{tag.get('hex_color', '#6c757d')}};">
+                                                    <t t-esc="tag.get('name')"/>
                                                 </span>
                                             </t>
                                         </t>
-                                        <t t-else="">
-                                            <p class="text-muted">Sin géneros</p>
-                                        </t>
+                                        <t t-else=""><p class="text-muted">Sin géneros</p></t>
                                     </div>
                                 </div>
-                                
-                                <!-- Duration -->
+
                                 <div class="metadata-section mb-3">
                                     <p class="mb-0">
-                                        <strong>Duración:</strong>
+                                        <strong>Duración:</strong> 
                                         <t t-if="movie.get('duration')">
-                                            <t t-esc="'{:.0f} min'.format(movie.get('duration'))"/>
+                                            <t t-esc="int(movie.get('duration'))"/> min
                                         </t>
                                         <t t-else="">N/A</t>
                                     </p>
                                 </div>
-                                
-                                <!-- Release Date -->
+
                                 <div class="metadata-section mb-3">
                                     <p class="mb-0">
-                                        <strong>Fecha de estreno:</strong>
+                                        <strong>Fecha de estreno:</strong> 
                                         <t t-if="movie.get('release_date')">
-                                            <t t-esc="movie.get('release_date').strftime('%d de %B de %Y') if hasattr(movie.get('release_date'), 'strftime') else movie.get('release_date')"/>
+                                            <t t-esc="movie.get('release_date')"/>
                                         </t>
-                                        <t t-else="">N/A</t>
+                                        <t t-else=""><span class="text-muted">Próximamente</span></t>
                                     </p>
                                 </div>
-                                
-                                <!-- Rating -->
+
                                 <div class="metadata-section">
                                     <p class="mb-0">
-                                        <strong>Puntuación:</strong>
-                                        <t t-esc="str(movie.get('rating', 0.0))"/>
+                                        <strong>Puntuación:</strong> 
+                                        <t t-esc="movie.get('rating', 0.0)"/>
                                     </p>
                                 </div>
-                                
                             </div>
                         </div>
-                        
                     </div>
-                    <!-- End Row -->
-                    
                 </div>
-                <!-- End Container -->
-                
             </t>
         </template>
-        
     </data>
 </odoo>

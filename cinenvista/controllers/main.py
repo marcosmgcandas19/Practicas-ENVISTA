@@ -95,6 +95,16 @@ class CinenvistaCineController(http.Controller):
         Returns:
             dict: Película en formato diccionario
         """
+        
+        
+        # --- LOGS DE DEPURACIÓN PARA CAMPOS ESPECÍFICOS ---
+        _logger.info(f" DEBUG CINENVISTA: Procesando película ID {movie.id}")
+        _logger.info(f" DEBUG CINENVISTA: Título: {movie.title}")
+        _logger.info(f" DEBUG CINENVISTA: Duración leída: {movie.duration} (Tipo: {type(movie.duration)})")
+        _logger.info(f" DEBUG CINENVISTA: Fecha Estreno leída: {movie.release_date} (Tipo: {type(movie.release_date)})")
+        # --------------------------------------------------
+        
+        
         movie_dict = {
             'id': movie.id,
             'title': movie.title or 'Sin título',
