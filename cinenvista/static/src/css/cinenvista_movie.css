@@ -8,7 +8,8 @@
 
 .cinenvista-movie-detail {
     background-color: #f8f9fa;
-    min-height: 100vh;
+    min-height: 75vh;
+    max-height: 85vh;
 }
 
 /* ============================================================ */
