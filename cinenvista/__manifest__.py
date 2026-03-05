@@ -49,7 +49,7 @@
         'website/header.xml',                          # Header personalizado corporativo
         'website/footer.xml',                          # Footer personalizado corporativo
         'website/home.xml',                            # Página principal (Home) con grilla de películas
-        'website/movie.xml',                           # Página de detalle de película
+        'website/movie.xml',                           # Página de detalle de película con modales
         
         # 7. Reportes y Wizards
         'reports/report_ticket_template.xml',          # Reporte PDF de tickets
@@ -66,6 +66,8 @@
             'cinenvista/static/src/css/cinenvista_footer.css',
             'cinenvista/static/src/css/cinenvista_home.css',
             'cinenvista/static/src/css/cinenvista_movie.css',
+            # Lógica de interactividad (JavaScript de Reservas)
+            'cinenvista/static/src/js/cinenvista_booking.js',
         ],
     },
     
