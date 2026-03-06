@@ -1,5 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- ============ VISTAS DEL BACKEND ============ -->
+    
+    <record id="view_movie_tree" model="ir.ui.view">
+        <field name="name">cinenvista.movie.tree</field>
+        <field name="model">cinenvista.movie</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="title"/>
+                <field name="rating"/>
+                <field name="state"/>
+                <field name="release_date"/>
+                <field name="duration"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_movie_form" model="ir.ui.view">
+        <field name="name">cinenvista.movie.form</field>
+        <field name="model">cinenvista.movie</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_get_movie" 
+                            string="Actualizar desde TMDB" 
+                            type="object" 
+                            class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="title" placeholder="Título de la película"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Información Básica">
+                            <field name="state"/>
+                            <field name="rating"/>
+                            <field name="duration"/>
+                            <field name="release_date"/>
+                        </group>
+                        <group string="Integración TMDB">
+                            <field name="tmdb_id"/>
+                            <field name="image_url"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" widget="html" placeholder="Sinopsis o descripción de la película"/>
+                    </group>
+                    <group string="Clasificación">
+                        <field name="tag_ids" widget="many2many_tags"/>
+                    </group>
+                    <notebook>
+                        <page string="Sesiones" name="sesiones">
+                            <field name="screening_ids">
+                                <tree editable="bottom">
+                                    <field name="room_id"/>
+                                    <field name="start_time"/>
+                                    <field name="available_seats" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cinenvista_movie" model="ir.actions.act_window">
+        <field name="name">Películas</field>
+        <field name="res_model">cinenvista.movie</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_movie" name="Películas" parent="menu_cinenvista_root" 
+              action="action_cinenvista_movie" sequence="10"/>
+
+    <!-- ============ PLANTILLAS WEBSITE ============ -->
+
     <template id="movie_template" name="Cinenvista Movie Detail">
         <t t-call="website.layout">
             <div id="wrap" class="cinenvista-movie-detail">

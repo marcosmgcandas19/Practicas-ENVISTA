@@ -108,64 +108,177 @@ class CinenvistaCineController(http.Controller):
 
     # ============ API DE RESERVA (JSON/AJAX) ============
 
-    @http.route('/cine/api/session/<int:session_id>/seats', type='json', auth='public', website=True)
+    @http.route('/cine/api/session/<int:session_id>/seats', type='http', auth='public', website=True, methods=['GET'])
     def get_session_seats(self, session_id, **kw):
-        """ Endpoint de obtención de butacas: Retorna mapa de sala y disponibilidad. """
-        screening = request.env['cinenvista.screening'].sudo().browse(session_id)
-        if not screening.exists():
-            return {'error': 'Sesión no encontrada'}
-
-        # Buscar butacas de la sala
-        all_seats = request.env['cinenvista.seat'].sudo().search([('room_id', '=', screening.room_id.id)])
+        """ 
+        Endpoint de obtención de butacas: Retorna mapa de sala y disponibilidad.
         
-        # Cruzar con reservas confirmadas
-        confirmed_reservations = request.env['cinenvista.reservation'].sudo().search([
-            ('screening_id', '=', session_id),
-            ('state', '=', 'confirmed')
-        ])
-        occupied_ids = confirmed_reservations.mapped('seat_ids').ids
+        Args:
+            session_id (int): ID de la sesión de proyección
+            
+        Returns:
+            json: Contiene session_id y lista de butacas con su estado (ocupada/disponible)
+        """
+        try:
+            screening = request.env['cinenvista.screening'].sudo().browse(session_id)
+            if not screening.exists():
+                return request.make_json_response({'error': 'Sesión no encontrada', 'success': False}, status=404)
 
-        seats_data = [{
-            'id': seat.id,
-            'name': seat.name,
-            'row': seat.row,
-            'number': seat.number,
-            'is_occupied': seat.id in occupied_ids
-        } for seat in all_seats]
+            # Buscar todas las butacas de la sala
+            all_seats = request.env['cinenvista.seat'].sudo().search([
+                ('room_id', '=', screening.room_id.id)
+            ], order='row, number')
+            
+            # Obtener las butacas ocupadas por reservas confirmadas
+            confirmed_reservations = request.env['cinenvista.reservation'].sudo().search([
+                ('screening_id', '=', session_id),
+                ('state', '=', 'confirmed')
+            ])
+            occupied_ids = confirmed_reservations.mapped('seat_ids').ids
 
-        return {'session_id': session_id, 'seats': seats_data}
+            # Construir lista de butacas con estado
+            seats_data = [{
+                'id': seat.id,
+                'name': seat.name,
+                'row': seat.row,
+                'number': seat.number,
+                'is_occupied': seat.id in occupied_ids
+            } for seat in all_seats]
 
-    @http.route('/cine/api/session/reserve', type='json', auth='public', website=True, methods=['POST'])
-    def reserve_seats(self, session_id, seat_ids, **kw):
-        """ Endpoint de Confirmación: Crea Pedido de Venta y Reserva. """
-        if not seat_ids:
-            return {'success': False, 'message': 'No hay asientos seleccionados'}
+            result = {
+                'success': True,
+                'session_id': session_id,
+                'seats': seats_data,
+                'room_name': screening.room_id.name,
+                'movie_title': screening.movie_id.title,
+                'screening_time': screening.start_time.isoformat() if screening.start_time else None
+            }
+            
+            return request.make_json_response(result)
+            
+        except Exception as e:
+            _logger.error(f'[CINENVISTA] Error al obtener butacas: {str(e)}')
+            return request.make_json_response({'error': 'Error al obtener el mapa de butacas', 'success': False}, status=500)
 
-        screening = request.env['cinenvista.screening'].sudo().browse(session_id)
+    @http.route('/cine/api/session/reserve', type='http', auth='public', website=True, methods=['POST'], csrf=False)
+    def reserve_seats(self, **kw):
+        """ 
+        Endpoint de Confirmación: Crea Pedido de Venta y Reserva.
+        Extrae los parámetros del body JSON.
         
-        # 1. Obtener producto de entrada
-        product = request.env['product.product'].sudo().search([('name', 'ilike', 'Entrada Regular')], limit=1)
-        if not product:
-            return {'success': False, 'message': 'Producto de entrada no configurado'}
+        Returns:
+            json: Contiene 'success' (bool), y si es exitoso: order_id y reservation_name
+        """
+        try:
+            import json
+            
+            # Extraer datos del body JSON
+            request_data = request.get_json_data()
+            session_id = request_data.get('session_id')
+            seat_ids = request_data.get('seat_ids', [])
+            
+            _logger.info(f'[CINENVISTA] Iniciando reserva - session_id: {session_id}, seat_ids: {seat_ids}')
+            
+            # Validación de entrada
+            if not session_id or not isinstance(session_id, int):
+                msg = 'ID de sesión inválido'
+                _logger.warning(f'[CINENVISTA] {msg} - session_id: {session_id}')
+                return request.make_json_response({'success': False, 'message': msg}, status=400)
+            
+            if not seat_ids or not isinstance(seat_ids, list):
+                msg = 'No hay asientos seleccionados'
+                _logger.warning(f'[CINENVISTA] {msg} - seat_ids: {seat_ids}')
+                return request.make_json_response({'success': False, 'message': msg}, status=400)
 
-        # 2. Crear Pedido de Venta (sale.order)
-        order = request.env['sale.order'].sudo().create({
-            'partner_id': request.env.user.partner_id.id,
-            'order_line': [(0, 0, {
-                'product_id': product.id,
-                'product_uom_qty': len(seat_ids),
-                'price_unit': product.list_price,
-                'name': f"Entrada: {screening.movie_id.title} ({screening.start_time})",
-            })],
-        })
+            seat_ids = [int(sid) for sid in seat_ids]  # Asegurar que son enteros
+            _logger.info(f'[CINENVISTA] IDs convertidos a enteros: {seat_ids}')
 
-        # 3. Crear Reserva (cinenvista.reservation)
-        reservation = request.env['cinenvista.reservation'].sudo().create({
-            'screening_id': session_id,
-            'seat_ids': [(6, 0, seat_ids)],
-            'sale_order_id': order.id,
-            'state': 'confirmed',
-            'partner_id': request.env.user.partner_id.id,
-        })
+            # Obtener la sesión
+            screening = request.env['cinenvista.screening'].sudo().browse(session_id)
+            if not screening.exists():
+                msg = 'Sesión no encontrada'
+                _logger.warning(f'[CINENVISTA] {msg} - session_id: {session_id}')
+                return request.make_json_response({'success': False, 'message': msg}, status=404)
+            
+            _logger.info(f'[CINENVISTA] Sesión encontrada: {screening.name} - Sala: {screening.room_id.name}')
 
-        return {'success': True, 'order_id': order.id, 'reservation_name': reservation.display_name}
+            # Validar que todas las butacas existen y pertenecen a la sala
+            seats = request.env['cinenvista.seat'].sudo().browse(seat_ids)
+            invalid_seats = [s for s in seats if s.room_id.id != screening.room_id.id]
+            if len(seats) != len(seat_ids) or invalid_seats:
+                msg = 'Una o más butacas seleccionadas no son válidas'
+                _logger.warning(f'[CINENVISTA] {msg} - Butacas encontradas: {len(seats)}, esperadas: {len(seat_ids)}')
+                return request.make_json_response({'success': False, 'message': msg}, status=400)
+
+            _logger.info(f'[CINENVISTA] Butacas validadas: {seats.mapped("name")}')
+
+            # Verificar que las butacas no estén ya ocupadas
+            occupied_seats = request.env['cinenvista.reservation'].sudo().search([
+                ('screening_id', '=', screening.id),
+                ('state', '=', 'confirmed'),
+                ('seat_ids', 'in', seat_ids)
+            ])
+            if occupied_seats:
+                occupied_names = list(set(occupied_seats.mapped('seat_ids.name')))
+                msg = f'Las siguientes butacas ya están reservadas: {", ".join(occupied_names)}'
+                _logger.warning(f'[CINENVISTA] {msg}')
+                return request.make_json_response({'success': False, 'message': msg}, status=409)
+
+            # Obtener producto de entrada regular
+            product = request.env['product.product'].sudo().search([('name', 'ilike', 'Entrada Regular')], limit=1)
+            if not product:
+                msg = 'Producto de entrada no configurado en el sistema'
+                _logger.warning(f'[CINENVISTA] {msg}')
+                return request.make_json_response({'success': False, 'message': msg}, status=500)
+
+            _logger.info(f'[CINENVISTA] Producto encontrado: {product.name} - Precio: {product.list_price}')
+
+            # Obtener el usuario actual (partner)
+            partner_id = request.env.user.partner_id.id if request.env.user.partner_id else False
+            _logger.info(f'[CINENVISTA] Partner ID: {partner_id}')
+            
+            # Crear Pedido de Venta (sale.order)
+            order_vals = {
+                'order_line': [(0, 0, {
+                    'product_id': product.id,
+                    'product_uom_qty': len(seat_ids),
+                    'price_unit': product.list_price or 0.0,
+                    'name': f"Entrada: {screening.movie_id.title} ({screening.start_time.strftime('%d/%m/%Y %H:%M')})",
+                })],
+            }
+            if partner_id:
+                order_vals['partner_id'] = partner_id
+                
+            _logger.info(f'[CINENVISTA] Creando pedido de venta con {len(seat_ids)} líneas')
+            order = request.env['sale.order'].sudo().create(order_vals)
+            _logger.info(f'[CINENVISTA] Pedido creado: {order.name} (ID: {order.id})')
+
+            # Crear Reserva (cinenvista.reservation)
+            _logger.info(f'[CINENVISTA] Creando reserva con seat_ids: {seat_ids}')
+            reservation = request.env['cinenvista.reservation'].sudo().create({
+                'screening_id': screening.id,
+                'seat_ids': [(6, 0, seat_ids)],
+                'sale_order_id': order.id,
+                'state': 'confirmed',
+                'partner_id': partner_id if partner_id else False,
+            })
+            _logger.info(f'[CINENVISTA] Reserva creada: {reservation.name} (ID: {reservation.id})')
+
+            result = {
+                'success': True, 
+                'order_id': order.id, 
+                'reservation_name': reservation.name,
+                'message': f'Reserva confirmada para las butacas: {", ".join(seats.mapped("name"))}'
+            }
+            
+            return request.make_json_response(result)
+
+        except json.JSONDecodeError as e:
+            _logger.error(f'[CINENVISTA] Error al parsear JSON: {str(e)}', exc_info=True)
+            return request.make_json_response({'success': False, 'message': f'JSON inválido: {str(e)}'}, status=400)
+        except ValueError as e:
+            _logger.error(f'[CINENVISTA] Error de validación en reserva: {str(e)}', exc_info=True)
+            return request.make_json_response({'success': False, 'message': f'Datos inválidos: {str(e)}'}, status=400)
+        except Exception as e:
+            _logger.error(f'[CINENVISTA] Error al procesar reserva: {str(e)}', exc_info=True)
+            return request.make_json_response({'success': False, 'message': f'Error: {str(e)}'}, status=500)

@@ -48,6 +48,14 @@ class CinenvistaMovie(models.Model):
         help='Estado actual de la película'
     )
     
+    # ============ RELACIONES ============
+    screening_ids = fields.One2many(
+        'cinenvista.screening',
+        'movie_id',
+        string='Horarios de Proyección',
+        help='Sesiones/proyecciones programadas para esta película'
+    )
+    
     # ============ CAMPOS DE INTEGRACIÓN EXTERNA ============
     image_url = fields.Char(
         string='URL de la Imagen',

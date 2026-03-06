@@ -41,7 +41,7 @@
                                 <div class="screenings-list d-flex flex-wrap gap-3">
                                     <t t-if="screenings">
                                         <t t-foreach="screenings" t-as="screening">
-                                            <div class="screening-card bg-success text-white rounded-lg p-3 d-flex flex-column align-items-center" style="min-width: 120px;">
+                                            <div class="screening-card bg-success text-white rounded-lg p-3 d-flex flex-column align-items-center" style="min-width: 120px; cursor: pointer;" t-att-data-session-id="screening.get('id')" onclick="openSeatModal(this);">
                                                 <div class="screening-time fw-bold" style="font-size: 1.25rem;">
                                                     <t t-esc="screening.get('start_time').strftime('%H:%M') if screening.get('start_time') else 'N/A'"/>
                                                 </div>
@@ -101,6 +101,54 @@
                                     </p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL: SELECCIÓN DE BUTACAS -->
+                <div id="seatSelectionModal" class="cinenvista-modal hidden">
+                    <div class="cinenvista-modal-backdrop" onclick="closeSeatModal();"></div>
+                    <div class="cinenvista-modal-content">
+                        <!-- Encabezado -->
+                        <div class="cinenvista-modal-header">
+                            <h2 class="modal-title">Selecciona tus butacas</h2>
+                            <button class="modal-close-btn" onclick="closeSeatModal();">✕</button>
+                        </div>
+
+                        <!-- Pantalla del Cine -->
+                        <div class="cinema-screen">
+                            <div class="screen-label">Pantalla</div>
+                        </div>
+
+                        <!-- Mapa de Butacas (se inyectará dinámicamente) -->
+                        <div class="seats-container" id="seatsGrid">
+                            <div class="loading-spinner">Cargando butacas...</div>
+                        </div>
+
+                        <!-- Resumen de Selección -->
+                        <div class="selection-summary">
+                            <div class="summary-content">
+                                <h4 class="summary-title">Butacas seleccionadas:</h4>
+                                <div class="selected-seats-list" id="selectedSeatsList">
+                                    <span class="empty-message">Ninguna butaca seleccionada</span>
+                                </div>
+                            </div>
+                            <div class="summary-actions">
+                                <button class="btn btn-secondary btn-sm" onclick="closeSeatModal();">Cancelar</button>
+                                <button class="btn btn-success btn-sm" id="confirmSeatsBtn" onclick="confirmSelection();" disabled="disabled">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL: CONFIRMACIÓN DE ÉXITO -->
+                <div id="successModal" class="cinenvista-modal hidden">
+                    <div class="cinenvista-modal-backdrop"></div>
+                    <div class="cinenvista-modal-success">
+                        <div class="success-content">
+                            <img src="/cinenvista/static/src/images/reserva.png" alt="Éxito" class="success-icon mb-3"/>
+                            <h2 class="success-title">¡Reserva Confirmada!</h2>
+                            <button class="btn btn-primary btn-lg" onclick="redirectToHome();">Gracias</button>
                         </div>
                     </div>
                 </div>

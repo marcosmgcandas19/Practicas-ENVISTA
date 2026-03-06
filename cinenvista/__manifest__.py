@@ -66,6 +66,8 @@
             'cinenvista/static/src/css/cinenvista_footer.css',
             'cinenvista/static/src/css/cinenvista_home.css',
             'cinenvista/static/src/css/cinenvista_movie.css',
+            # Estilos para el sistema de reserva de butacas
+            'cinenvista/static/src/css/cinenvista_booking.css',
             # Lógica de interactividad (JavaScript de Reservas)
             'cinenvista/static/src/js/cinenvista_booking.js',
         ],
