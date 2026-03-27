@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- Acción para mostrar productos con vistas Kanban y Tree -->
+    <record id="toji_product_action" model="ir.actions.act_window">
+      <field name="name">Productos</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">product.template</field>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="context">{}</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          No hay productos. ¡Crea uno para empezar!
+        </p>
+      </field>
+    </record>
+
+    <!-- Acción para mostrar Libros -->
+    <record id="toji_book_action" model="ir.actions.act_window">
+      <field name="name">Libros</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">toji.book</field>
+      <field name="view_mode">kanban,tree,form</field>
+      <field name="context">{}</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          No hay libros. ¡Crea uno para empezar!
+        </p>
+      </field>
+    </record>
+
+    <!-- Menú Principal: Tienda -->
+    <menuitem id="toji_store_menu" name="Tienda" sequence="10"/>
+
+    <!-- Submenú: Libros -->
+    <menuitem 
+      id="toji_books_menu" 
+      name="Libros" 
+      parent="toji_store_menu" 
+      action="toji_book_action" 
+      sequence="5"/>
+
+    <!-- Submenú: Productos -->
+    <menuitem 
+      id="toji_products_menu" 
+      name="Productos" 
+      parent="toji_store_menu" 
+      action="toji_product_action" 
+      sequence="10"/>
+
+  </data>
+</odoo>
