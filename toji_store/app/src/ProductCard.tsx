@@ -10,11 +10,11 @@ function ProductCard({ nombre, precio, imagen }: ProductCardProps) {
     hover:shadow-2xl transition-shadow duration-300 w-full max-w-xs border-black border-2 flex flex-col items-center">
       
       {/* Imagen del producto */}
-      <div className="relative overflow-hidden bg-gray-100 aspect-square m-10 w-4/5">
+      <div className="overflow-hidden bg-gray-100 aspect-square m-10 w-4/5 flex items-center justify-center">
         <img
           src={imagen}
           alt={nombre}
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-contain "
         />
       </div>
 
@@ -26,7 +26,7 @@ function ProductCard({ nombre, precio, imagen }: ProductCardProps) {
         </h3>
 
         {/* Precio y Botón */}
-        <div className="flex items-center justify-center gap-4 bg-gray-500 rounded-full 
+        <div className="flex items-center justify-center gap-4 bg-[#e3e3e3] rounded-full 
         px-4 py-2 w-full">
           <span className="text-2xl font-bold text-gray-900">
             {precio.toFixed(2)} €
