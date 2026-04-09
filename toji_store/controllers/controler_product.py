@@ -80,12 +80,12 @@ class TojiProductAPI(http.Controller):
                 headers=headers
             )
 
-    @http.route('/api/toji/products/<int:product_id>', auth='public', type='http', methods=['GET'])
+    @http.route('/api/toji/products/<int:product_id>', auth='public', type='json')
     def get_product_detail(self, product_id, **kwargs):
         """
         Retorna los detalles de un producto individual publicado en web.
         
-        URL: GET /api/toji/products/<product_id>
+        URL: GET/POST /api/toji/products/<product_id>
         
         Args:
             product_id (int): ID del producto a obtener
@@ -125,21 +125,11 @@ class TojiProductAPI(http.Controller):
             
             # Validar que el producto existe
             if not product:
-                response_data = {
+                return {
                     'success': False,
                     'error': 'Producto no encontrado o no publicado',
                     'product': None
                 }
-                
-                headers = {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                }
-                
-                return request.make_response(
-                    json.dumps(response_data),
-                    headers=headers
-                )
             
             # Obtener URL de imagen
             image_url = ''
@@ -168,41 +158,21 @@ class TojiProductAPI(http.Controller):
                 'website_published': product.website_published,
             }
             
-            response_data = {
+            print(f"[DEBUG] Retornando producto exitosamente: {product.name}")
+            
+            return {
                 'success': True,
                 'product': product_data
             }
-            
-            print(f"[DEBUG] Retornando producto exitosamente: {product.name}")
-            
-            headers = {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            }
-            
-            return request.make_response(
-                json.dumps(response_data),
-                headers=headers
-            )
             
         except Exception as e:
             print(f"[DEBUG] Error en get_product_detail: {str(e)}")
             import traceback
             traceback.print_exc()
             
-            response_data = {
+            return {
                 'success': False,
                 'error': str(e),
                 'product': None
             }
-            
-            headers = {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            }
-            
-            return request.make_response(
-                json.dumps(response_data),
-                headers=headers
-            )
 

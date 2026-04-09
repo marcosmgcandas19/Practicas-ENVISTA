@@ -38,10 +38,11 @@ function Product() {
     setError(null)
 
     fetch(`/api/toji/products/${id}`, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      body: JSON.stringify({})
     })
       .then((response) => {
         console.log('Response status:', response.status)
@@ -54,12 +55,14 @@ function Product() {
         }
         return response.json()
       })
-      .then((data: ApiResponse) => {
+      .then((data: any) => {
         console.log('API Response:', data)
-        if (data.success && data.product) {
-          setProduct(data.product)
+        // Con type='json' en Odoo, la respuesta viene envuelta en jsonrpc
+        const result = data.result || data
+        if (result.success && result.product) {
+          setProduct(result.product)
         } else {
-          setError(data.error || 'Producto no encontrado')
+          setError(result.error || 'Producto no encontrado')
         }
       })
       .catch((error: Error) => {
