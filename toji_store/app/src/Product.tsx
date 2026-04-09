@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, ShoppingCart } from 'lucide-react'
+import { ArrowLeft, ShoppingCart, Home } from 'lucide-react'
 import { Chip, Card } from '@heroui/react'
 
 interface Author {
@@ -25,6 +25,7 @@ function Product() {
   const [product, setProduct] = useState<ProductData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isExpandedSynopsis, setIsExpandedSynopsis] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -98,39 +99,40 @@ function Product() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header con botón volver */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <button
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-gray-700 hover:text-black transition-colors font-medium"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            Volver
-          </button>
-        </div>
-      </div>
 
+
+    <div className="min-h-screen bg-gray-50">
       {/* Contenido principal */}
       <main className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Sección de Imagen */}
-          <div className="flex items-center justify-center">
-            <div className="bg-white rounded-2xl shadow-lg p-8 w-full aspect-square flex items-center justify-center border-2 border-black">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Sección de Imagen - Izquierda */}
+          <div className="lg:col-span-1 flex flex-col items-center gap-4">
+            {/* Breadcrumb */}
+            <button
+              onClick={() => navigate('/')}
+              className="inline-flex items-center gap-2 px-5 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors text-gray-800 font-medium text-sm"
+            >
+              <Home className="w-5 h-5" />
+              <span>Catálogo</span>
+              <span className="text-gray-600">&gt;</span>
+              <span className="font-semibold">{product.name}</span>
+            </button>
+            
+            {/* Imagen */}
+            <div className="bg-white rounded-3xl shadow-lg p-6 w-full flex items-center justify-center border-2 border-gray-200">
               <img
                 src={product.image_url}
                 alt={product.name}
-                className="w-full h-full object-contain"
+                className="w-full h-auto object-contain"
               />
             </div>
           </div>
 
-          {/* Sección de Información */}
-          <div className="flex flex-col justify-start">
+          {/* Sección de Información - Centro */}
+          <div className="lg:col-span-1 flex flex-col">
             {/* Header del Producto */}
-            <div className="mb-8">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <div className="mb-6">
+              <h1 className="text-5xl font-bold text-gray-900 mb-6">
                 {product.name}
               </h1>
 
@@ -142,71 +144,93 @@ function Product() {
                       key={author.id}
                       variant="soft"
                       size="lg"
-                      className="font-medium"
+                      className="font-medium bg-gray-200 text-gray-800"
                     >
                       {author.name}
                     </Chip>
                   ))}
                 </div>
               )}
-
-              {/* Precio */}
-              <div className="text-3xl font-bold text-black mb-4">
-                {product.price.toFixed(2)} €
-              </div>
             </div>
 
             {/* Sección de Sinopsis */}
             {product.synopsis && (
-              <Card className="mb-8 shadow-lg">
-                <div className="p-6 gap-4">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4">Sinopsis</h2>
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                    {product.synopsis}
-                  </p>
-                </div>
-              </Card>
+              <div className="mb-6">
+                <Card className={`shadow-sm overflow-hidden relative ${
+                  isExpandedSynopsis ? '' : ''
+                }`}>
+                  <div className={`p-6 ${
+                    isExpandedSynopsis ? '' : 'max-h-48'
+                  }`}>
+                    <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-sm">
+                      {product.synopsis}
+                    </p>
+                  </div>
+                  {!isExpandedSynopsis && (
+                    <div className="absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-white to-transparent pointer-events-none" />
+                  )}
+                </Card>
+                <button
+                  onClick={() => setIsExpandedSynopsis(!isExpandedSynopsis)}
+                  className="mt-2 px-6 py-2 bg-black text-white font-semibold rounded-full hover:bg-gray-800 transition-colors text-sm"
+                >
+                  {isExpandedSynopsis ? 'Leer menos' : 'Leer más'}
+                </button>
+              </div>
             )}
 
             {/* Descripción adicional */}
             {product.description && (
-              <div className="bg-gray-100 rounded-lg p-4 mb-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Descripción
-                </h3>
-                <p className="text-gray-700 leading-relaxed line-clamp-4">
+              <div className="mb-6">
+                <p className="text-gray-600 leading-relaxed text-sm line-clamp-6">
                   {product.description}
                 </p>
               </div>
             )}
 
-            {/* Botones de Acción */}
-            <div className="flex flex-col sm:flex-row gap-4 mt-auto">
-              <button className="flex-1 bg-black text-white font-bold py-4 rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
-                <ShoppingCart className="w-6 h-6" />
-                Añadir al carrito
-              </button>
-              <button
-                onClick={() => navigate('/')}
-                className="px-8 py-4 border-2 border-black text-black font-bold rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                Continuar comprando
-              </button>
-            </div>
 
-            {/* Información adicional */}
-            <div className="mt-8 pt-8 border-t border-gray-300">
-              <p className="text-sm text-gray-600">
-                ✓ Envío disponible en España
-              </p>
-              <p className="text-sm text-gray-600">
-                ✓ Garantía de satisfacción
-              </p>
-            </div>
+          </div>
+
+          {/* Sidebar Derecha - Precio y CTA */}
+          <div className="lg:col-span-1 flex flex-col">
+            {/* Card de Precio */}
+            <Card className="mb-6 shadow-lg border-2 border-gray-200">
+              <div className="p-8">
+                {/* Precio */}
+                <div className="text-center mb-6">
+                  <p className="text-4xl font-bold text-black">
+                    {product.price.toFixed(2)} €
+                  </p>
+                </div>
+
+                {/* Botón Añadir al Carrito */}
+                <button className="w-full bg-black text-white font-bold py-3 rounded-full hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 mb-6">
+                  <ShoppingCart className="w-5 h-5" />
+                </button>
+
+                {/* Info de Disponibilidad */}
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">📦</span>
+                    <p className="text-sm text-gray-700">
+                      Consulta la disponibilidad en nuestras librerías. Recógelo gratis
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">📅</span>
+                    <p className="text-sm text-gray-700">
+                      Recibelo mañana jueves 9 de abril.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </main>
     </div>
+
+
   )
 }
 
