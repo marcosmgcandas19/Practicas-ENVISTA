@@ -5,7 +5,7 @@ function Header() {
     <header className="bg-black text-white">
 
 
-      <div className="grid grid-cols-3 gap-8 items-center px-8 py-4 max-w-7xl mx-auto">
+      <div className="grid grid-cols-3 gap-8 items-center px-2 py-4 max-w-7xl mx-auto">
         {/* Logo - Izquierda */}
         <div className="flex items-center">
           <img

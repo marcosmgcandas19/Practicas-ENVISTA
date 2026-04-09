@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, ShoppingCart, Home } from 'lucide-react'
+import { ArrowLeft, ShoppingCart, Home, Store, Truck } from 'lucide-react'
 import { Chip, Card } from '@heroui/react'
 
 interface Author {
@@ -101,9 +101,9 @@ function Product() {
   return (
 
 
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50">
       {/* Contenido principal */}
-      <main className="max-w-7xl mx-auto px-4 py-12">
+      <main className="max-w-7xl mx-auto px-2 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Sección de Imagen - Izquierda */}
           <div className="lg:col-span-1 flex flex-col items-center gap-4">
@@ -192,39 +192,38 @@ function Product() {
           </div>
 
           {/* Sidebar Derecha - Precio y CTA */}
-          <div className="lg:col-span-1 flex flex-col">
-            {/* Card de Precio */}
-            <Card className="mb-6 shadow-lg border-2 border-gray-200">
-              <div className="p-8">
-                {/* Precio */}
-                <div className="text-center mb-6">
-                  <p className="text-4xl font-bold text-black">
-                    {product.price.toFixed(2)} €
-                  </p>
-                </div>
+          <div className="lg:col-span-1 flex flex-col h-fit border-2 border-black rounded-3xl p-8">
+            {/* Precio */}
+            <div className="text-center mb-6">
+              <p className="text-4xl font-bold text-black">
+                {product.price.toFixed(2)} €
+              </p>
+            </div>
 
-                {/* Botón Añadir al Carrito */}
-                <button className="w-full bg-black text-white font-bold py-3 rounded-full hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 mb-6">
-                  <ShoppingCart className="w-5 h-5" />
-                </button>
+            {/* Botón Añadir al Carrito */}
+            <button className="w-full bg-black text-white font-bold py-3 rounded-full hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 mb-6">
+              <ShoppingCart className="w-5 h-5" />
+            </button>
 
-                {/* Info de Disponibilidad */}
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <span className="text-xl">📦</span>
-                    <p className="text-sm text-gray-700">
-                      Consulta la disponibilidad en nuestras librerías. Recógelo gratis
-                    </p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="text-xl">📅</span>
-                    <p className="text-sm text-gray-700">
-                      Recibelo mañana jueves 9 de abril.
-                    </p>
-                  </div>
+            {/* Info de Disponibilidad */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="shrink-0 w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <Store className="w-6 h-6 text-gray-700" />
                 </div>
+                <p className="text-sm text-gray-700">
+                  Consulta la disponibilidad en nuestras librerías. <span className="font-bold">Recógelo gratis</span>
+                </p>
               </div>
-            </Card>
+              <div className="flex items-center gap-3">
+                <div className="shrink-0 w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <Truck className="w-6 h-6 text-gray-700" />
+                </div>
+                <p className="text-sm text-gray-700">
+                  <span className="font-bold">Recibelo mañana</span> jueves 9 de abril.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </main>

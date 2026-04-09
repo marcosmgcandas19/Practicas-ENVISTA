@@ -109,14 +109,13 @@ function ProductCarousel() {
         {/* Carrusel */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {visibleProducts.map((product) => (
-            <div key={product.id} className="flex justify-center">
-              <ProductCard
-                id={product.id}
-                nombre={product.name}
-                precio={product.price}
-                imagen={product.image_url}
-              />
-            </div>
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              nombre={product.name}
+              precio={product.price}
+              imagen={product.image_url}
+            />
           ))}
         </div>
 

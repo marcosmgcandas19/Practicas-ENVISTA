@@ -11,7 +11,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="grow bg-gray-50 py-12 px-4">
+      <main className="grow bg-gray-50 py-12 px-2">
         {children}
       </main>
       <Footer />

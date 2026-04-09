@@ -10,7 +10,7 @@ interface ProductCardProps {
 function ProductCard({ id, nombre, precio, imagen }: ProductCardProps) {
   const cardContent = (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden 
-    hover:shadow-2xl transition-shadow duration-300 w-full max-w-xs border-black border-2 flex flex-col items-center cursor-pointer">
+    hover:shadow-2xl transition-shadow duration-300 w-full border-black border-2 flex flex-col items-center cursor-pointer h-full">
       
       {/* Imagen del producto */}
       <div className="overflow-hidden bg-gray-100 aspect-square m-10 w-4/5 flex items-center justify-center">
