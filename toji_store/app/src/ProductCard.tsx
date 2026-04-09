@@ -1,13 +1,16 @@
+import { Link } from 'react-router-dom'
+
 interface ProductCardProps {
+  id?: number
   nombre: string
   precio: number
   imagen: string
 }
 
-function ProductCard({ nombre, precio, imagen }: ProductCardProps) {
-  return (
+function ProductCard({ id, nombre, precio, imagen }: ProductCardProps) {
+  const cardContent = (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden 
-    hover:shadow-2xl transition-shadow duration-300 w-full max-w-xs border-black border-2 flex flex-col items-center">
+    hover:shadow-2xl transition-shadow duration-300 w-full max-w-xs border-black border-2 flex flex-col items-center cursor-pointer">
       
       {/* Imagen del producto */}
       <div className="overflow-hidden bg-gray-100 aspect-square m-10 w-4/5 flex items-center justify-center">
@@ -31,7 +34,9 @@ function ProductCard({ nombre, precio, imagen }: ProductCardProps) {
           <span className="text-2xl font-bold text-gray-900">
             {precio.toFixed(2)} €
           </span>
-          <button className="bg-black text-white rounded-full px-10 py-4 hover:bg-gray-800 transition-colors duration-200 flex items-center justify-center flex-shrink-0">
+          <button 
+            onClick={(e) => e.preventDefault()}
+            className="bg-black text-white rounded-full px-10 py-4 hover:bg-gray-800 transition-colors duration-200 flex items-center justify-center shrink-0">
             <svg
               className="w-7 h-7"
               fill="none"
@@ -50,6 +55,16 @@ function ProductCard({ nombre, precio, imagen }: ProductCardProps) {
       </div>
     </div>
   )
+
+  if (id) {
+    return (
+      <Link to={`/product/${id}`} className="no-underline">
+        {cardContent}
+      </Link>
+    )
+  }
+
+  return cardContent
 }
 
 export default ProductCard

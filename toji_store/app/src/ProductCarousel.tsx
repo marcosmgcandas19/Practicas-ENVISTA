@@ -111,6 +111,7 @@ function ProductCarousel() {
           {visibleProducts.map((product) => (
             <div key={product.id} className="flex justify-center">
               <ProductCard
+                id={product.id}
                 nombre={product.name}
                 precio={product.price}
                 imagen={product.image_url}

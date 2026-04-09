@@ -79,3 +79,116 @@ class TojiProductAPI(http.Controller):
                 json.dumps(response_data),
                 headers=headers
             )
+
+    @http.route('/api/toji/products/<int:product_id>', auth='public', type='http', methods=['GET'])
+    def get_product_detail(self, product_id, **kwargs):
+        """
+        Retorna los detalles de un producto individual publicado en web.
+        
+        Args:
+            product_id (int): ID del producto a obtener
+        
+        Returns:
+            JSON con los siguientes campos:
+            - id: ID del producto
+            - name: Nombre del producto
+            - price: Precio de lista
+            - description: Descripción del producto
+            - synopsis: Sinopsis literaria
+            - authors: Lista de autores con id y name
+            - image_url: URL de la imagen del producto
+            - website_published: Estado de publicación en web
+        """
+        try:
+            print(f"[DEBUG] Buscando producto con ID: {product_id}")
+            
+            # Buscar el producto que coincida con el ID y esté publicado
+            product = request.env['product.template'].sudo().search([
+                ('id', '=', product_id),
+                ('website_published', '=', True)
+            ], limit=1)
+            
+            print(f"[DEBUG] Producto encontrado: {bool(product)}")
+            
+            # Validar que el producto existe
+            if not product:
+                response_data = {
+                    'success': False,
+                    'error': 'Producto no encontrado o no publicado',
+                    'product': None
+                }
+                
+                headers = {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+                
+                return request.make_response(
+                    json.dumps(response_data),
+                    headers=headers
+                )
+            
+            # Obtener URL de imagen
+            image_url = ''
+            if product.image_url:
+                image_url = product.image_url
+            elif product.image_1920:
+                image_url = f"/web/image/product.template/{product.id}/image_1920"
+            
+            # Construir lista de autores
+            authors_data = []
+            for author in product.author_ids:
+                authors_data.append({
+                    'id': author.id,
+                    'name': author.name,
+                })
+            
+            # Construir respuesta con los detalles del producto
+            product_data = {
+                'id': product.id,
+                'name': product.name,
+                'price': float(product.list_price) if product.list_price else 0.0,
+                'description': product.description or '',
+                'synopsis': product.synopsis or '',
+                'authors': authors_data,
+                'image_url': image_url,
+                'website_published': product.website_published,
+            }
+            
+            response_data = {
+                'success': True,
+                'product': product_data
+            }
+            
+            headers = {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+            
+            print(f"[DEBUG] Retornando producto exitosamente")
+            
+            return request.make_response(
+                json.dumps(response_data),
+                headers=headers
+            )
+            
+        except Exception as e:
+            print(f"[DEBUG] Error en get_product_detail: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            
+            response_data = {
+                'success': False,
+                'error': str(e),
+                'product': None
+            }
+            
+            headers = {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+            
+            return request.make_response(
+                json.dumps(response_data),
+                headers=headers
+            )

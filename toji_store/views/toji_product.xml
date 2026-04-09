@@ -16,6 +16,19 @@
                     </group>
                 </xpath>
 
+                <xpath expr="//notebook" position="inside">
+                    <page name="library" string="Librería">
+                        <group>
+                            <group string="Información de Autor">
+                                <field name="author_ids" widget="many2many_tags"/>
+                            </group>
+                            <group string="Descripción Literaria">
+                                <field name="synopsis" nolabel="1" placeholder="Escriba la sinopsis del libro..."/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
             </field>
         </record>
 

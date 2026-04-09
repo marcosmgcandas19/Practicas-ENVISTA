@@ -1,21 +1,40 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from './Header.tsx'
 import Footer from './Footer.tsx'
 import ProductCarousel from './ProductCarousel.tsx'
+import Product from './Product.tsx'
 
-function App() {
+function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow bg-gray-50 py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <ProductCarousel />
-        </div>
+      <main className="grow bg-gray-50 py-12 px-4">
+        {children}
       </main>
       <Footer />
     </div>
+  )
+}
+
+function HomePage() {
+  return (
+    <div className="max-w-7xl mx-auto">
+      <ProductCarousel />
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout children={<HomePage />} />} />
+        <Route path="/product/:id" element={<Layout children={<Product />} />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

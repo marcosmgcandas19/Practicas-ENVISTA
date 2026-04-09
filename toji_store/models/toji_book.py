@@ -18,3 +18,15 @@ class TojiBook(models.Model):
         string='URL de Imagen',
         help='Campo para añadir la imagen vía URL.'
     )
+
+    author_ids = fields.Many2many(
+        'res.partner',
+        string='Autores',
+        domain=[('is_company', '=', False)],
+        help='Autores de la obra literaria. Se seleccionan solo contactos de tipo persona.'
+    )
+
+    synopsis = fields.Text(
+        string='Sinopsis',
+        help='Descripción extendida de la obra literaria.'
+    )
