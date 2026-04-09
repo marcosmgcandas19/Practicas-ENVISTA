@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, ShoppingCart } from 'lucide-react'
+import { Chip, Card } from '@heroui/react'
 
 interface Author {
   id: number
@@ -16,12 +17,6 @@ interface ProductData {
   authors: Author[]
   image_url: string
   website_published: boolean
-}
-
-interface ApiResponse {
-  success: boolean
-  product?: ProductData
-  error?: string
 }
 
 function Product() {
@@ -139,16 +134,18 @@ function Product() {
                 {product.name}
               </h1>
 
-              {/* Autores como Chips */}
+              {/* Autores como Chips de HeroUI */}
               {product.authors.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-6">
                   {product.authors.map((author) => (
-                    <span
+                    <Chip
                       key={author.id}
-                      className="inline-block px-4 py-2 bg-gray-200 text-gray-800 rounded-full text-sm font-medium border border-gray-300"
+                      variant="soft"
+                      size="lg"
+                      className="font-medium"
                     >
                       {author.name}
-                    </span>
+                    </Chip>
                   ))}
                 </div>
               )}
@@ -161,12 +158,14 @@ function Product() {
 
             {/* Sección de Sinopsis */}
             {product.synopsis && (
-              <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border-2 border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Sinopsis</h2>
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                  {product.synopsis}
-                </p>
-              </div>
+              <Card className="mb-8 shadow-lg">
+                <div className="p-6 gap-4">
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">Sinopsis</h2>
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                    {product.synopsis}
+                  </p>
+                </div>
+              </Card>
             )}
 
             {/* Descripción adicional */}
