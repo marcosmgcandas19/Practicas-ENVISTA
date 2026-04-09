@@ -85,6 +85,8 @@ class TojiProductAPI(http.Controller):
         """
         Retorna los detalles de un producto individual publicado en web.
         
+        URL: GET /api/toji/products/<product_id>
+        
         Args:
             product_id (int): ID del producto a obtener
         
@@ -100,7 +102,7 @@ class TojiProductAPI(http.Controller):
             - website_published: Estado de publicación en web
         """
         try:
-            print(f"[DEBUG] Buscando producto con ID: {product_id}")
+            print(f"\n[DEBUG] Buscando producto con ID: {product_id}, tipo: {type(product_id)}")
             
             # Buscar el producto que coincida con el ID y esté publicado
             product = request.env['product.template'].sudo().search([
@@ -109,6 +111,17 @@ class TojiProductAPI(http.Controller):
             ], limit=1)
             
             print(f"[DEBUG] Producto encontrado: {bool(product)}")
+            
+            # Si no encuentra con website_published, buscar sin esa condición para debuguear
+            if not product:
+                print(f"[DEBUG] No encontrado con website_published=True, buscando sin esa condición...")
+                product_debug = request.env['product.template'].sudo().search([
+                    ('id', '=', product_id)
+                ], limit=1)
+                if product_debug:
+                    print(f"[DEBUG] Producto existe pero website_published={product_debug.website_published}")
+                else:
+                    print(f"[DEBUG] Producto NO existe en la BD")
             
             # Validar que el producto existe
             if not product:
@@ -160,12 +173,12 @@ class TojiProductAPI(http.Controller):
                 'product': product_data
             }
             
+            print(f"[DEBUG] Retornando producto exitosamente: {product.name}")
+            
             headers = {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             }
-            
-            print(f"[DEBUG] Retornando producto exitosamente")
             
             return request.make_response(
                 json.dumps(response_data),
@@ -192,3 +205,4 @@ class TojiProductAPI(http.Controller):
                 json.dumps(response_data),
                 headers=headers
             )
+

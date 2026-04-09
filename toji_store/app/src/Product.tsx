@@ -37,7 +37,12 @@ function Product() {
     setLoading(true)
     setError(null)
 
-    fetch(`/api/toji/products/${id}`)
+    fetch(`/api/toji/products/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
       .then((response) => {
         console.log('Response status:', response.status)
         console.log('Response headers:', response.headers.get('content-type'))
